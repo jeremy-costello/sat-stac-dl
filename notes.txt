@@ -1,0 +1,5 @@
+https://www.eodms-sgdot.nrcan-rncan.gc.ca/stac/collections
+sentinel-1 : 75087 items
+rcm-ard : 11534 items
+rcm : 1077757 items
+
