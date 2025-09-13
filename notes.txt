@@ -1,5 +1,30 @@
 https://www.eodms-sgdot.nrcan-rncan.gc.ca/stac/collections
+
 sentinel-1 : 75087 items
+all data links are .zips
+tiffs in here but harder to use
+
 rcm-ard : 11534 items
+direct access to tiffs
+
 rcm : 1077757 items
+all data links are to order the data
+
+
+RCM-ARD
+RADARSAT Constellation Mission, CEOS-ARD
+
+assets
+rl : COG : Backscatter Measurements RL Polarization
+rr : COG : Backscatter Measurements RR Polarization
+rrrl : COG : Normalized Polarimetric Radar Covariance Matrix (CovMat)
+metadata : xml : ARD Product Metadata
+data_mask : COG : Data Mask Image
+thumbnail : png : Thumbnail
+eula_license : pdf : EULA
+rl_thumbnail : geotiff : Backscatter RL Polarization Quicklook
+rr_thumbnail : geotiff : Backscatter RR Polarization Quicklook
+local_inc_angle : COG : Local Incident Angle Image
+gamma_to_sigma_ratio : COG : Gamma-to-Sigma Ratio Image
+local_contributing_area : COG : Scattering Area Image
 
