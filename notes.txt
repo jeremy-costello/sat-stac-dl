@@ -28,6 +28,18 @@ local_inc_angle : COG : Local Incident Angle Image
 gamma_to_sigma_ratio : COG : Gamma-to-Sigma Ratio Image
 local_contributing_area : COG : Scattering Area Image
 
+the "full" COG is only 96.6GB
+https://open.canada.ca/data/en/dataset/f316c469-c068-46f9-a650-95a75f461106/resource/ddca8ee4-d39f-4343-8759-5f87eafa31b8
+- this doesn't (really) have a time component though
+- also available as a STAC API
+  - https://datacube.services.geo.ca/stac/api/search?collections=rcm-ard-mosaic
+
+
+NOTES
+- patch encoding caching? probably not frozen
+  - at least patch caching
+- position and temporal-specific "position" embedding
+
 
 
 PRITHVI
@@ -35,6 +47,8 @@ pre-trained on NASA's HLS V2 L30 product (30m granularity) from the contiguous U
 https://planetarycomputer.microsoft.com/dataset/storage/hls
 https://nbviewer.org/github/microsoft/AIforEarthDataSets/blob/main/data/hls.ipynb
 
+
+PRITHVI PAPER
 https://arxiv.org/abs/2412.02732
 - masked auto-encoder
   - based on ViT-L and ViT-H
@@ -53,3 +67,26 @@ https://arxiv.org/abs/2412.02732
 - full dataset description in section 2
   - ensuring diverse training samples
   - 4.2M training and 46k validation samples
+
+
+VISION TRANSFORMER PAPER
+https://arxiv.org/abs/2010.11929
+- base (86M), large (307M), huge (632M)
+
+MASKED AUTOENCODER PAPER
+https://arxiv.org/abs/2111.06377
+
+DINOv3 PAPER
+https://arxiv.org/abs/2508.10104
+- version trained on satellite imagery (section 8)
+  - "Our satellite DINOv3 7B model is pre-trained on SAT-493M, a dataset of 493 millions of 512 × 512 images
+    sampled randomly from Maxar RGB ortho-rectified imagery at 0.6 meter resolution"
+- https://github.com/facebookresearch/dinov3/issues/34
+- https://huggingface.co/facebook/dinov3-vitl16-pretrain-sat493m
+
+GEO-BENCH PAPER
+https://arxiv.org/abs/2306.03831
+- section 2 is very interesting
+  - multispectral with revisits (longitude, latitude, wavelength, time)
+  - other sensors: SAR and elevation
+  - semantic data (text, non-image data)
