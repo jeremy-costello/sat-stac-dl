@@ -22,19 +22,21 @@ items = list(search.items())
 print(f"Found {len(items)} items")
 
 # pick your desired asset key
-asset_key = "local_contributing_area"
+assets = [
+  "rl",
+  "rr",
+  "data_mask",
+  "local_inc_angle",
+  "gamma_to_sigma_ratio",
+  "local_contributing_area"
+]
 
 # load to DataArray
 arr = stackstac.stack(
     items,
-    assets=[asset_key],
+    assets=assets,
     epsg=3857,  # 326**
     resolution=30,
     bounds_latlon=bbox
 )
-
-# Ensure correct CRS is set
-arr = arr.rio.write_crs("EPSG:4326")
-
-# Export to GeoTIFF
-arr.squeeze().rio.to_raster("rcm_ard_rl.tif")
+print(arr.shape)

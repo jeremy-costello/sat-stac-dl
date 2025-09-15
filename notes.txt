@@ -39,6 +39,7 @@ NOTES
 - patch encoding caching? probably not frozen
   - at least patch caching
 - position and temporal-specific "position" embedding
+- grow dataset over N epochs and then do prioritized replay
 
 
 
@@ -46,6 +47,8 @@ PRITHVI
 pre-trained on NASA's HLS V2 L30 product (30m granularity) from the contiguous United States
 https://planetarycomputer.microsoft.com/dataset/storage/hls
 https://nbviewer.org/github/microsoft/AIforEarthDataSets/blob/main/data/hls.ipynb
+https://planetarycomputer.microsoft.com/dataset/hls2-l30
+https://planetarycomputer.microsoft.com/dataset/hls2-s30
 
 
 PRITHVI PAPER
@@ -66,7 +69,22 @@ https://arxiv.org/abs/2412.02732
   - random horizontal flips (why not vertical too? or even rotations)
 - full dataset description in section 2
   - ensuring diverse training samples
+    - based on LULC
+      - copernicus land cover 100m
+      - resolve ecoregions
+      - 1000 tiles with high LULC entropy
+      - is urban in LULC? or based on population or something?
   - 4.2M training and 46k validation samples
+
+
+DATA PROCESSING
+- land cover
+  - https://atlas.gc.ca/land-cover/Atlas_LandCover_EN.html
+  - https://datacube.services.geo.ca/stac/api/collections/landcover
+- collect N samples and have land cover statistics (including entropy between classes)
+- oversample small provinces by area
+- near-equal sample across area
+
 
 
 VISION TRANSFORMER PAPER
@@ -90,3 +108,4 @@ https://arxiv.org/abs/2306.03831
   - multispectral with revisits (longitude, latitude, wavelength, time)
   - other sensors: SAR and elevation
   - semantic data (text, non-image data)
+- 0.1m to 15m resolution
