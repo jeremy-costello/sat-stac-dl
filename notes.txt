@@ -28,3 +28,28 @@ local_inc_angle : COG : Local Incident Angle Image
 gamma_to_sigma_ratio : COG : Gamma-to-Sigma Ratio Image
 local_contributing_area : COG : Scattering Area Image
 
+
+
+PRITHVI
+pre-trained on NASA's HLS V2 L30 product (30m granularity) from the contiguous United States
+https://planetarycomputer.microsoft.com/dataset/storage/hls
+https://nbviewer.org/github/microsoft/AIforEarthDataSets/blob/main/data/hls.ipynb
+
+https://arxiv.org/abs/2412.02732
+- masked auto-encoder
+  - based on ViT-L and ViT-H
+  - 3D patch and positional embeddings (t,h,w) with t=1 (?????)
+- positional embeddings and time/location embeddings are separate?
+- models trained for 400 epochs with batch size of 3840
+- other hyperparameters
+  - weight decay of 0.05
+  - LR scheduling
+    - linear warmup from 1e-6 to 5e-4 over 40 epochs
+    - cosine decay
+  - dropout of 0.1
+- training samples have 4x256x256 shape (time, width, height)
+  - randomly cropped to 4x224x224
+  - random horizontal flips (why not vertical too? or even rotations)
+- full dataset description in section 2
+  - ensuring diverse training samples
+  - 4.2M training and 46k validation samples
