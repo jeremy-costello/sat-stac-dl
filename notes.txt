@@ -69,11 +69,15 @@ https://arxiv.org/abs/2412.02732
   - random horizontal flips (why not vertical too? or even rotations)
 - full dataset description in section 2
   - ensuring diverse training samples
-    - based on LULC
+    - tiles selected based on LULC
       - copernicus land cover 100m
       - resolve ecoregions
       - 1000 tiles with high LULC entropy
       - is urban in LULC? or based on population or something?
+    - images were sampled from tiles
+      - dropped all samples with >1% missing values in any band, or >20% cloudy pixels using HLS Fmask
+      - missing values were filled with nearest interpolation
+      - ensured each patch area has not more than 10 samples
   - 4.2M training and 46k validation samples
 
 
@@ -84,6 +88,7 @@ DATA PROCESSING
 - collect N samples and have land cover statistics (including entropy between classes)
 - oversample small provinces by area
 - near-equal sample across area
+- how to choose validation tiles? outside of canada?
 
 
 
