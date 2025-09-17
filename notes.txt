@@ -89,6 +89,9 @@ DATA PROCESSING
 - oversample small provinces by area
 - near-equal sample across area
 - how to choose validation tiles? outside of canada?
+- cross-validation? per province maybe (and territory)
+  - province boundaries
+    - https://open.canada.ca/data/en/dataset/a883eb14-0c0e-45c4-b8c4-b54c4a819edb/resource/12c03de6-c3f7-4f5f-bb5c-d479f2332842
 
 
 
