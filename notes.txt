@@ -114,3 +114,6 @@ https://arxiv.org/abs/2306.03831
   - other sensors: SAR and elevation
   - semantic data (text, non-image data)
 - 0.1m to 15m resolution
+
+PhilEO PAPER
+https://arxiv.org/abs/2506.14765v3
