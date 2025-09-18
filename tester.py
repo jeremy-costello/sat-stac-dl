@@ -1,15 +1,17 @@
 import rioxarray
-import rasterio
 from utils import get_bbox_within_canada, save_with_bandnames
-from stacs import get_rcm_data, get_landcover_data, get_hls_data  # import new function
+from stacs import get_rcm_data, get_landcover_data, get_hls_data
+from metadata import features_from_bbox
 
 
 # Parameters
 resolution_m = 30
 tile_size = 256
-rcm_filename = "./test_data/rcm_tile.tif"
-landcover_filename = "./test_data/landcover_tile.tif"
-hls_filename = "./test_data/hls_tile.tif"
+provinces_shapefile = "./inputs/provinces_digital"
+
+rcm_filename = "./outputs/rcm_tile.tif"
+landcover_filename = "./outputs/landcover_tile.tif"
+hls_filename = "./outputs/hls_tile.tif"
 
 
 # 1. Generate random bbox and degree resolution
@@ -33,7 +35,7 @@ else:
 # 3. Fetch Landcover data
 landcover_tile = get_landcover_data(bbox, deg_res)
 if landcover_tile is not None:
-    band_names = list(landcover_tile.band.values)  # should be ["landcover-2010", "landcover-2015", "landcover-2020"]
+    band_names = list(landcover_tile.band.values)
     save_with_bandnames(landcover_tile, landcover_filename, band_names)
     print(f"Saved Landcover tile to {landcover_filename}")
 else:
@@ -42,9 +44,30 @@ else:
 # 4. Fetch Sentinel HLS data (default collection = hls2-s30)
 hls_tile = get_hls_data(bbox, deg_res, collection="hls2-s30")
 if hls_tile is not None:
-    hls_tile_squeezed = hls_tile.squeeze(dim="time")  # drop time dimension
-    band_names = list(hls_tile_squeezed.band.values)  # should be ["B02", "B03", "B04"]
+    hls_tile_squeezed = hls_tile.squeeze(dim="time")
+    band_names = list(hls_tile_squeezed.band.values)
     save_with_bandnames(hls_tile_squeezed, hls_filename, band_names)
     print(f"Saved HLS Sentinel tile to {hls_filename}")
 else:
     print("HLS data not available, skipping save.")
+
+# 5. Get metadata
+shapefiles = [
+    {"path": "./inputs/prov_terr", "columns": ["PRNAME", "PRUID"]},
+    {"path": "./inputs/census_div", "columns": ["CDNAME", "CDUID"]},
+    {"path": "./inputs/census_subdiv", "columns": ["CSDNAME", "CSDUID"]},
+]
+
+for sf in shapefiles:
+    results = features_from_bbox(
+        bbox=bbox,
+        shapefile_path=sf["path"],
+        columns=sf["columns"],
+        find_nearest=True  # returns nearest if no intersection
+    )
+    print(f"\nResults for {sf['path']}:")
+    if results:
+        for r in results:
+            print(r)
+    else:
+        print("No features found.")
