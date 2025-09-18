@@ -1,7 +1,10 @@
 import random
 import math
+import rasterio
+
 
 CANADA_BBOX = [-141.002, 41.676, -52.63, 83.136]  # lon/lat bounds
+
 
 def get_bbox_within_canada(resolution_m: int, tile_size: int):
     # pick a random latitude/longitude
@@ -30,3 +33,12 @@ def get_bbox_within_canada(resolution_m: int, tile_size: int):
         "bbox": [minlon, minlat, maxlon, maxlat],
         "deg_resolution": (deg_per_pixel_lon, deg_per_pixel_lat)
     }
+
+
+# Helper: save raster + band names
+def save_with_bandnames(arr, filename, band_names=None):
+    arr.rio.to_raster(filename)
+    if band_names is not None:
+        with rasterio.open(filename, "r+") as dst:
+            for i, name in enumerate(band_names, start=1):
+                dst.set_band_description(i, str(name))
