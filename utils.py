@@ -30,7 +30,7 @@ def get_bbox_within_canada(resolution_m: int, tile_size: int):
     maxlat = lat + half_lat
 
     return {
-        "bbox": [minlon, minlat, maxlon, maxlat],
+        "bbox": (minlon, minlat, maxlon, maxlat),
         "deg_resolution": (deg_per_pixel_lon, deg_per_pixel_lat)
     }
 
