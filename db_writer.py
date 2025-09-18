@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS raster_metadata (
 """)
 
 results_collected = 0
-max_results = 100
+max_results = 1000
 record_id = 1
 
 while results_collected < max_results:

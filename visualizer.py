@@ -6,8 +6,12 @@ import json
 conn = duckdb.connect('./outputs/metadata.duckdb')
 results = conn.execute("SELECT bbox, landcover_file, rcm_file, province, census_div, census_subdiv FROM raster_metadata").fetchall()
 
-# Create map
-m = folium.Map(location=[0, 0], zoom_start=2)
+# Create map with a different tile provider that works with GitHub Pages
+m = folium.Map(
+    location=[0, 0], 
+    zoom_start=2,
+    tiles='CartoDB positron'  # This works better with GitHub Pages
+)
 
 for row in results:
     bbox = row[0] # [min_lon, min_lat, max_lon, max_lat]
@@ -43,7 +47,7 @@ for row in results:
         weight=2
     ).add_to(m)
 
-# Add a legend - increased height to fit all content
+# Add a legend
 legend_html = '''
 <div style="position: fixed;
             bottom: 120px; left: 50px; width: 200px; height: 110px;
