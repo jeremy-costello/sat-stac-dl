@@ -213,3 +213,4 @@ inputs/*
 outputs/*
 !outputs/.gitkeep
 *.html
+!index.html

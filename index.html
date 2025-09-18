@@ -1,0 +1,2411 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_9ffe788218a1cbbffc01d002c014d59b {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div style="position: fixed;
+            bottom: 120px; left: 50px; width: 200px; height: 110px;
+            background-color: white; border:2px solid grey; z-index:9999;
+            font-size:14px; padding: 10px">
+<b>Legend</b><br>
+<i class="fa fa-square" style="color:red"></i> Missing landcover file<br>
+<i class="fa fa-square" style="color:yellow"></i> Missing RCM file<br>
+<i class="fa fa-square" style="color:green"></i> Both files available
+</div>
+    
+            <div class="folium-map" id="map_9ffe788218a1cbbffc01d002c014d59b" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_9ffe788218a1cbbffc01d002c014d59b = L.map(
+                "map_9ffe788218a1cbbffc01d002c014d59b",
+                {
+                    center: [0.0, 0.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 2,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_3a019fcce53bf740f94a195a972d9a5b = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_3a019fcce53bf740f94a195a972d9a5b.addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+            var rectangle_445e794816fb7a3a99e4d95bafd9a288 = L.rectangle(
+                [[75.17638877853342, -98.03338433069294], [75.24510958342024, -97.7641700837531]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_982dee8b37a0ddff227cb1614be236cc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_20894fe1372f2a602861aebefb2eab68 = $(`<div id="html_20894fe1372f2a602861aebefb2eab68" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_982dee8b37a0ddff227cb1614be236cc.setContent(html_20894fe1372f2a602861aebefb2eab68);
+            
+        
+
+        rectangle_445e794816fb7a3a99e4d95bafd9a288.bindPopup(popup_982dee8b37a0ddff227cb1614be236cc)
+        ;
+
+        
+    
+    
+            var rectangle_585f4763c69f2253a9b194f043fb69b9 = L.rectangle(
+                [[58.77216633498583, -67.50179545162896], [58.84088713987264, -67.369111764465]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_71123210345ecdaca25cbf8a144396ec = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0488fdab4aba424e66123d366da4e85f = $(`<div id="html_0488fdab4aba424e66123d366da4e85f" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_71123210345ecdaca25cbf8a144396ec.setContent(html_0488fdab4aba424e66123d366da4e85f);
+            
+        
+
+        rectangle_585f4763c69f2253a9b194f043fb69b9.bindPopup(popup_71123210345ecdaca25cbf8a144396ec)
+        ;
+
+        
+    
+    
+            var rectangle_a7339edfbcf2948d8bd672055d78270c = L.rectangle(
+                [[42.044215743344274, -71.17209996910557], [42.11293654823108, -71.07951258857088]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_f4d72b448626408594cb38f82ddd2c2a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_bd079c0c53e29fe64fb209044f89d8f8 = $(`<div id="html_bd079c0c53e29fe64fb209044f89d8f8" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Quebec / Québec<br><b>Census Division:</b> Coaticook<br><b>Census Subdivision:</b> East Hereford</div>`)[0];
+                popup_f4d72b448626408594cb38f82ddd2c2a.setContent(html_bd079c0c53e29fe64fb209044f89d8f8);
+            
+        
+
+        rectangle_a7339edfbcf2948d8bd672055d78270c.bindPopup(popup_f4d72b448626408594cb38f82ddd2c2a)
+        ;
+
+        
+    
+    
+            var rectangle_1710f41d8f50a565bd130017c273000f = L.rectangle(
+                [[82.72044331585917, -99.27991998159821], [82.789164120746, -98.73501755214924]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_78a78fad80a54a57e4b3011364095e37 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b8a674a4d4d8b12c109831cf43cc9daa = $(`<div id="html_b8a674a4d4d8b12c109831cf43cc9daa" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_78a78fad80a54a57e4b3011364095e37.setContent(html_b8a674a4d4d8b12c109831cf43cc9daa);
+            
+        
+
+        rectangle_1710f41d8f50a565bd130017c273000f.bindPopup(popup_78a78fad80a54a57e4b3011364095e37)
+        ;
+
+        
+    
+    
+            var rectangle_2b02bb35563d8efec6e0a89106a9895b = L.rectangle(
+                [[67.00675495428848, -71.79881344185085], [67.0754757591753, -71.62263808570535]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_cdf32035465b6308a4baf90eb47398ff = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fea305a7ca2ca9a6ecf83f9c42ae3b9c = $(`<div id="html_fea305a7ca2ca9a6ecf83f9c42ae3b9c" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_cdf32035465b6308a4baf90eb47398ff.setContent(html_fea305a7ca2ca9a6ecf83f9c42ae3b9c);
+            
+        
+
+        rectangle_2b02bb35563d8efec6e0a89106a9895b.bindPopup(popup_cdf32035465b6308a4baf90eb47398ff)
+        ;
+
+        
+    
+    
+            var rectangle_49ae896c47425d0aa512456ad76e7966 = L.rectangle(
+                [[60.92721445504678, -110.51499824587478], [60.99593525993359, -110.37342148201003]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_0deedef96a6f2ac539ff0d126938cb10 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_97ee3c5e0ca3b5fbebec23054f91697a = $(`<div id="html_97ee3c5e0ca3b5fbebec23054f91697a" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 5<br><b>Census Subdivision:</b> Region 5, Unorganized</div>`)[0];
+                popup_0deedef96a6f2ac539ff0d126938cb10.setContent(html_97ee3c5e0ca3b5fbebec23054f91697a);
+            
+        
+
+        rectangle_49ae896c47425d0aa512456ad76e7966.bindPopup(popup_0deedef96a6f2ac539ff0d126938cb10)
+        ;
+
+        
+    
+    
+            var rectangle_80e4a89b984f782b04c8b17280580e1f = L.rectangle(
+                [[82.61591956902926, -98.39779926642842], [82.68464037391608, -97.86060449583692]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_f67b0d9f3e215ffb59014717707465b6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9043e5204370c5d3458779a699fc9e3d = $(`<div id="html_9043e5204370c5d3458779a699fc9e3d" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_f67b0d9f3e215ffb59014717707465b6.setContent(html_9043e5204370c5d3458779a699fc9e3d);
+            
+        
+
+        rectangle_80e4a89b984f782b04c8b17280580e1f.bindPopup(popup_f67b0d9f3e215ffb59014717707465b6)
+        ;
+
+        
+    
+    
+            var rectangle_4eb4e34d9b497bcbd58e0d4ea345b3af = L.rectangle(
+                [[66.07777800887146, -136.01591168468258], [66.14649881375828, -135.8462088491076]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_4e3295f9a7dab1ebeec18355ffdf26d6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5b4d5e82865c16537965906c5ed3ab4e = $(`<div id="html_5b4d5e82865c16537965906c5ed3ab4e" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Yukon<br><b>Census Division:</b> Yukon<br><b>Census Subdivision:</b> Yukon, Unorganized</div>`)[0];
+                popup_4e3295f9a7dab1ebeec18355ffdf26d6.setContent(html_5b4d5e82865c16537965906c5ed3ab4e);
+            
+        
+
+        rectangle_4eb4e34d9b497bcbd58e0d4ea345b3af.bindPopup(popup_4e3295f9a7dab1ebeec18355ffdf26d6)
+        ;
+
+        
+    
+    
+            var rectangle_414f8a09e36bd18790129193e550348a = L.rectangle(
+                [[82.01768708559406, -56.18301302252036], [82.08640789048088, -55.686021098675944]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_7215beec366a061e9dac100a3a9fdaac = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1e9c227c01d55a3492af3e06107dcacf = $(`<div id="html_1e9c227c01d55a3492af3e06107dcacf" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_7215beec366a061e9dac100a3a9fdaac.setContent(html_1e9c227c01d55a3492af3e06107dcacf);
+            
+        
+
+        rectangle_414f8a09e36bd18790129193e550348a.bindPopup(popup_7215beec366a061e9dac100a3a9fdaac)
+        ;
+
+        
+    
+    
+            var rectangle_7f4116b6057d7305bbb877061b4d9144 = L.rectangle(
+                [[60.989004875194816, -65.08102813532712], [61.057725680081624, -64.93917574143778]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_bd2a49b4c68cf771bae4100e49f7bfbb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b41e97efde1a52e7d120c573151986d4 = $(`<div id="html_b41e97efde1a52e7d120c573151986d4" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_bd2a49b4c68cf771bae4100e49f7bfbb.setContent(html_b41e97efde1a52e7d120c573151986d4);
+            
+        
+
+        rectangle_7f4116b6057d7305bbb877061b4d9144.bindPopup(popup_bd2a49b4c68cf771bae4100e49f7bfbb)
+        ;
+
+        
+    
+    
+            var rectangle_5c298c504851dfc7d7e2476cd6cf7779 = L.rectangle(
+                [[66.04543341016986, -105.8410986162552], [66.11415421505669, -105.67161178838343]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_0f6402069cb5f6f2a308e8a998f94d9d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c4a91719163d122a40aa418f99ace0d7 = $(`<div id="html_c4a91719163d122a40aa418f99ace0d7" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Kitikmeot<br><b>Census Subdivision:</b> Kitikmeot, Unorganized</div>`)[0];
+                popup_0f6402069cb5f6f2a308e8a998f94d9d.setContent(html_c4a91719163d122a40aa418f99ace0d7);
+            
+        
+
+        rectangle_5c298c504851dfc7d7e2476cd6cf7779.bindPopup(popup_0f6402069cb5f6f2a308e8a998f94d9d)
+        ;
+
+        
+    
+    
+            var rectangle_7a0f246547c8b56ff207d245264ca9e1 = L.rectangle(
+                [[79.56070099362518, -86.17464894983249], [79.629421798512, -85.79414334627666]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_8884f78336fc7f0fcae1a6ea19f47df9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8f79dd88517605fd00f2db44c88e6a66 = $(`<div id="html_8f79dd88517605fd00f2db44c88e6a66" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_8884f78336fc7f0fcae1a6ea19f47df9.setContent(html_8f79dd88517605fd00f2db44c88e6a66);
+            
+        
+
+        rectangle_7a0f246547c8b56ff207d245264ca9e1.bindPopup(popup_8884f78336fc7f0fcae1a6ea19f47df9)
+        ;
+
+        
+    
+    
+            var rectangle_e4e4dba5fbad6b15e26e568c0efb183a = L.rectangle(
+                [[76.02267753900148, -71.50357749682114], [76.0913983438883, -71.21837667744258]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_8ca15463da5cb7062d3d3b09822715c8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_12110f48530f1633fbb664c303f8cc12 = $(`<div id="html_12110f48530f1633fbb664c303f8cc12" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_8ca15463da5cb7062d3d3b09822715c8.setContent(html_12110f48530f1633fbb664c303f8cc12);
+            
+        
+
+        rectangle_e4e4dba5fbad6b15e26e568c0efb183a.bindPopup(popup_8ca15463da5cb7062d3d3b09822715c8)
+        ;
+
+        
+    
+    
+            var rectangle_4083f364f530b9da66aa98da9d29ba88 = L.rectangle(
+                [[42.17318810824898, -62.604136711511124], [42.24190891313579, -62.51136053785178]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_2112a506450290300464770b25eb52b8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5c84b87dff967539bb1c23b232c61ef5 = $(`<div id="html_5c84b87dff967539bb1c23b232c61ef5" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nova Scotia / Nouvelle-Écosse<br><b>Census Division:</b> Halifax<br><b>Census Subdivision:</b> Halifax</div>`)[0];
+                popup_2112a506450290300464770b25eb52b8.setContent(html_5c84b87dff967539bb1c23b232c61ef5);
+            
+        
+
+        rectangle_4083f364f530b9da66aa98da9d29ba88.bindPopup(popup_2112a506450290300464770b25eb52b8)
+        ;
+
+        
+    
+    
+            var rectangle_3f04cd0890f6fce76fa60d43b417a4f7 = L.rectangle(
+                [[61.72951557406106, -60.62593474920692], [61.79823637894787, -60.48068028464212]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_9f4cf644face88c28bbf57f6638f4c48 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1c1e46fc62ea50caeac9d364e95d59a9 = $(`<div id="html_1c1e46fc62ea50caeac9d364e95d59a9" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_9f4cf644face88c28bbf57f6638f4c48.setContent(html_1c1e46fc62ea50caeac9d364e95d59a9);
+            
+        
+
+        rectangle_3f04cd0890f6fce76fa60d43b417a4f7.bindPopup(popup_9f4cf644face88c28bbf57f6638f4c48)
+        ;
+
+        
+    
+    
+            var rectangle_45b296328f4e059f1b07519204f5b6cd = L.rectangle(
+                [[51.21401309414978, -55.452834661334045], [51.282733899036586, -55.343047479092085]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_2df4751392599b286a808e1b517fd15d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_95fd2e01f93918ca70004f4e62945b27 = $(`<div id="html_95fd2e01f93918ca70004f4e62945b27" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Newfoundland and Labrador / Terre-Neuve-et-Labrador<br><b>Census Division:</b> Division No.  9<br><b>Census Subdivision:</b> Division No.  9, Subd. D, Division No.  9, Subd. F</div>`)[0];
+                popup_2df4751392599b286a808e1b517fd15d.setContent(html_95fd2e01f93918ca70004f4e62945b27);
+            
+        
+
+        rectangle_45b296328f4e059f1b07519204f5b6cd.bindPopup(popup_2df4751392599b286a808e1b517fd15d)
+        ;
+
+        
+    
+    
+            var rectangle_2d51e437c041608bdbf02a1cbcc8a65e = L.rectangle(
+                [[76.47633464011896, -135.74254551183884], [76.54505544500579, -135.44794005187867]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_1da17e7af55b4307c2f501be5d09dd21 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d32607ba75548b2eeed0327a86e0e006 = $(`<div id="html_d32607ba75548b2eeed0327a86e0e006" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_1da17e7af55b4307c2f501be5d09dd21.setContent(html_d32607ba75548b2eeed0327a86e0e006);
+            
+        
+
+        rectangle_2d51e437c041608bdbf02a1cbcc8a65e.bindPopup(popup_1da17e7af55b4307c2f501be5d09dd21)
+        ;
+
+        
+    
+    
+            var rectangle_4ea2935f5203d59fd7bd4d8c88ec3d72 = L.rectangle(
+                [[64.872871836472, -140.5686805840023], [64.94159264135882, -140.40663574246022]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_8538cf4ba1876d3a8556617b8e706465 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0f838d0ef44ea889066efb1645a05c04 = $(`<div id="html_0f838d0ef44ea889066efb1645a05c04" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Yukon<br><b>Census Division:</b> Yukon<br><b>Census Subdivision:</b> Yukon, Unorganized</div>`)[0];
+                popup_8538cf4ba1876d3a8556617b8e706465.setContent(html_0f838d0ef44ea889066efb1645a05c04);
+            
+        
+
+        rectangle_4ea2935f5203d59fd7bd4d8c88ec3d72.bindPopup(popup_8538cf4ba1876d3a8556617b8e706465)
+        ;
+
+        
+    
+    
+            var rectangle_b553a7aa2c7b978b97ae182aa9a36ffb = L.rectangle(
+                [[48.15183696265466, -69.7722721639131], [48.22055776754147, -69.66919797136984]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_78b9536cb1b92784253cbc237afa3b19 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_58f2d36b86e76719fe90cbe53770b041 = $(`<div id="html_58f2d36b86e76719fe90cbe53770b041" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Quebec / Québec<br><b>Census Division:</b> La Haute-Côte-Nord<br><b>Census Subdivision:</b> Tadoussac, Sacré-Coeur</div>`)[0];
+                popup_78b9536cb1b92784253cbc237afa3b19.setContent(html_58f2d36b86e76719fe90cbe53770b041);
+            
+        
+
+        rectangle_b553a7aa2c7b978b97ae182aa9a36ffb.bindPopup(popup_78b9536cb1b92784253cbc237afa3b19)
+        ;
+
+        
+    
+    
+            var rectangle_d8da0c5d4d702be560fae500dc48fb4a = L.rectangle(
+                [[53.01381622830001, -113.30426264600064], [53.08253703318682, -113.18994579911003]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_dfada8b960797fbc10ade8643de12595 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7b901a93dda57859cb87c385352ec5c6 = $(`<div id="html_7b901a93dda57859cb87c385352ec5c6" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Alberta<br><b>Census Division:</b> Division No. 11<br><b>Census Subdivision:</b> Wetaskiwin County No. 10</div>`)[0];
+                popup_dfada8b960797fbc10ade8643de12595.setContent(html_7b901a93dda57859cb87c385352ec5c6);
+            
+        
+
+        rectangle_d8da0c5d4d702be560fae500dc48fb4a.bindPopup(popup_dfada8b960797fbc10ade8643de12595)
+        ;
+
+        
+    
+    
+            var rectangle_b2056d60bdea9a4eb2ab046b97c3f7ff = L.rectangle(
+                [[44.566778866998945, -80.84305897539025], [44.63549967188575, -80.74654262909752]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_04e3fb5971385ab7132c88639544d8ff = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8c8534fed25410a49c430505f4c66e90 = $(`<div id="html_8c8534fed25410a49c430505f4c66e90" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario<br><b>Census Division:</b> Grey<br><b>Census Subdivision:</b> Meaford</div>`)[0];
+                popup_04e3fb5971385ab7132c88639544d8ff.setContent(html_8c8534fed25410a49c430505f4c66e90);
+            
+        
+
+        rectangle_b2056d60bdea9a4eb2ab046b97c3f7ff.bindPopup(popup_04e3fb5971385ab7132c88639544d8ff)
+        ;
+
+        
+    
+    
+            var rectangle_653e834a8978d45cc0d056fdbc2c1ed9 = L.rectangle(
+                [[80.37998008337772, -114.63116080871787], [80.44870088826454, -114.2184776660239]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_a02f04f267c07b94b723933f3875006a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1e299dd6ee1c61e4b078274a203ec364 = $(`<div id="html_1e299dd6ee1c61e4b078274a203ec364" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_a02f04f267c07b94b723933f3875006a.setContent(html_1e299dd6ee1c61e4b078274a203ec364);
+            
+        
+
+        rectangle_653e834a8978d45cc0d056fdbc2c1ed9.bindPopup(popup_a02f04f267c07b94b723933f3875006a)
+        ;
+
+        
+    
+    
+            var rectangle_d0182c18f55acb577fe49dc491766d8b = L.rectangle(
+                [[64.02915675055033, -58.08261331659902], [64.09787755543715, -57.92549211600429]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_da5e6e8397494e9fcb7e34905233f3ce = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f79e9a6d3f665b369fa17026177ed4a9 = $(`<div id="html_f79e9a6d3f665b369fa17026177ed4a9" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_da5e6e8397494e9fcb7e34905233f3ce.setContent(html_f79e9a6d3f665b369fa17026177ed4a9);
+            
+        
+
+        rectangle_d0182c18f55acb577fe49dc491766d8b.bindPopup(popup_da5e6e8397494e9fcb7e34905233f3ce)
+        ;
+
+        
+    
+    
+            var rectangle_d16ba73b216dc4e8a791310d59b32a0d = L.rectangle(
+                [[71.51630138702524, -138.74527494496832], [71.58502219191206, -138.5281242791182]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_cca5947e21647fd9737ca78b9f99c38e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d0d975989c4e1a3ee6904bba364a9717 = $(`<div id="html_d0d975989c4e1a3ee6904bba364a9717" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_cca5947e21647fd9737ca78b9f99c38e.setContent(html_d0d975989c4e1a3ee6904bba364a9717);
+            
+        
+
+        rectangle_d16ba73b216dc4e8a791310d59b32a0d.bindPopup(popup_cca5947e21647fd9737ca78b9f99c38e)
+        ;
+
+        
+    
+    
+            var rectangle_f48e50f74d70208ffe95d66a9fd7d37e = L.rectangle(
+                [[43.159823739993065, -90.01595973653603], [43.228544544879874, -89.92169744212565]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_2db0920f2cc943ed45c31cb7269b01b0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f41ad8efe3adb11871937d997441b6d9 = $(`<div id="html_f41ad8efe3adb11871937d997441b6d9" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario<br><b>Census Division:</b> Thunder Bay<br><b>Census Subdivision:</b> Thunder Bay, Unorganized</div>`)[0];
+                popup_2db0920f2cc943ed45c31cb7269b01b0.setContent(html_f41ad8efe3adb11871937d997441b6d9);
+            
+        
+
+        rectangle_f48e50f74d70208ffe95d66a9fd7d37e.bindPopup(popup_2db0920f2cc943ed45c31cb7269b01b0)
+        ;
+
+        
+    
+    
+            var rectangle_c055884aca0de2937a588cb6c108f6e0 = L.rectangle(
+                [[71.481298795553, -80.94302346587324], [71.55001960043982, -80.72626967871855]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_771a17e6ed1a0f076b0734be965c7fcb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f2ebeea3ce442e445624140a73bae50c = $(`<div id="html_f2ebeea3ce442e445624140a73bae50c" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_771a17e6ed1a0f076b0734be965c7fcb.setContent(html_f2ebeea3ce442e445624140a73bae50c);
+            
+        
+
+        rectangle_c055884aca0de2937a588cb6c108f6e0.bindPopup(popup_771a17e6ed1a0f076b0734be965c7fcb)
+        ;
+
+        
+    
+    
+            var rectangle_c6b0455e04f04e3e7b296de827292bd1 = L.rectangle(
+                [[59.5221444438511, -123.1161677763404], [59.590865248737906, -122.9805404215189]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_3abe3ac7974578cd4a663630c537ff86 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_646cac0ff96f13ba0a8a49366e47c96c = $(`<div id="html_646cac0ff96f13ba0a8a49366e47c96c" style="width: 100.0%; height: 100.0%;"><b>Province:</b> British Columbia / Colombie-Britannique<br><b>Census Division:</b> Northern Rockies<br><b>Census Subdivision:</b> Northern Rockies</div>`)[0];
+                popup_3abe3ac7974578cd4a663630c537ff86.setContent(html_646cac0ff96f13ba0a8a49366e47c96c);
+            
+        
+
+        rectangle_c6b0455e04f04e3e7b296de827292bd1.bindPopup(popup_3abe3ac7974578cd4a663630c537ff86)
+        ;
+
+        
+    
+    
+            var rectangle_284667681c1e654b2c8294220e51b7b5 = L.rectangle(
+                [[44.25010000132723, -79.70840450748503], [44.31882080621404, -79.61240992674442]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_9da0d193602a30bf667f18c20145ec50 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_dbac8feffa6ae3a23387762c893cc33e = $(`<div id="html_dbac8feffa6ae3a23387762c893cc33e" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario<br><b>Census Division:</b> Simcoe<br><b>Census Subdivision:</b> Barrie, Innisfil</div>`)[0];
+                popup_9da0d193602a30bf667f18c20145ec50.setContent(html_dbac8feffa6ae3a23387762c893cc33e);
+            
+        
+
+        rectangle_284667681c1e654b2c8294220e51b7b5.bindPopup(popup_9da0d193602a30bf667f18c20145ec50)
+        ;
+
+        
+    
+    
+            var rectangle_4acaa1e2a6dd13d4e24c488e1b2c9dd6 = L.rectangle(
+                [[54.259576908792624, -92.91693333428229], [54.32829771367943, -92.7991855456067]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_99c3ffe5a8a87c94f0bbc2098c889f70 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_363caace93ce8d8e43aee0343aaa5e77 = $(`<div id="html_363caace93ce8d8e43aee0343aaa5e77" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario, Manitoba<br><b>Census Division:</b> Kenora, Division No. 22<br><b>Census Subdivision:</b> Kenora, Unorganized, Division No. 22, Unorganized</div>`)[0];
+                popup_99c3ffe5a8a87c94f0bbc2098c889f70.setContent(html_363caace93ce8d8e43aee0343aaa5e77);
+            
+        
+
+        rectangle_4acaa1e2a6dd13d4e24c488e1b2c9dd6.bindPopup(popup_99c3ffe5a8a87c94f0bbc2098c889f70)
+        ;
+
+        
+    
+    
+            var rectangle_3c57fa41e436b3e197678a1e031ce7cb = L.rectangle(
+                [[75.79733768314156, -90.47992582540888], [75.86605848802839, -90.19917034252816]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_8e286638c5f7d993f4265c33304f9b3d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8f9e247db5ea5ecacd2eb1f0ad8d94d7 = $(`<div id="html_8f9e247db5ea5ecacd2eb1f0ad8d94d7" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_8e286638c5f7d993f4265c33304f9b3d.setContent(html_8f9e247db5ea5ecacd2eb1f0ad8d94d7);
+            
+        
+
+        rectangle_3c57fa41e436b3e197678a1e031ce7cb.bindPopup(popup_8e286638c5f7d993f4265c33304f9b3d)
+        ;
+
+        
+    
+    
+            var rectangle_e7a8b03c8fb89990c25f59e926c9e6c8 = L.rectangle(
+                [[69.70123949548275, -102.06897816979362], [69.76996030036958, -101.87056546243629]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_c907f693b4dd5e334a16e456755131ea = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b8538f24262fa961639d37cdce96067b = $(`<div id="html_b8538f24262fa961639d37cdce96067b" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Kitikmeot<br><b>Census Subdivision:</b> Kitikmeot, Unorganized</div>`)[0];
+                popup_c907f693b4dd5e334a16e456755131ea.setContent(html_b8538f24262fa961639d37cdce96067b);
+            
+        
+
+        rectangle_e7a8b03c8fb89990c25f59e926c9e6c8.bindPopup(popup_c907f693b4dd5e334a16e456755131ea)
+        ;
+
+        
+    
+    
+            var rectangle_361c70453c34a1d4620fa082e1936a2a = L.rectangle(
+                [[47.84881183431684, -103.7837928022765], [47.91753263920365, -103.6813230078604]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_a1e3252118bf298fd0c85b217f454611 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_df4a4a40583354fd6cca84a436130148 = $(`<div id="html_df4a4a40583354fd6cca84a436130148" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Saskatchewan<br><b>Census Division:</b> Division No.  2<br><b>Census Subdivision:</b> Souris Valley No. 7</div>`)[0];
+                popup_a1e3252118bf298fd0c85b217f454611.setContent(html_df4a4a40583354fd6cca84a436130148);
+            
+        
+
+        rectangle_361c70453c34a1d4620fa082e1936a2a.bindPopup(popup_a1e3252118bf298fd0c85b217f454611)
+        ;
+
+        
+    
+    
+            var rectangle_97d447f93f6bd921ebe23808f2172027 = L.rectangle(
+                [[67.78324779231976, -133.40110062509493], [67.85196859720658, -133.21908586937943]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_5ff599c9a1b525bc0f9ab3cd480c8fe0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5007d676b1dc8d30afcd26bbec4e4ba2 = $(`<div id="html_5007d676b1dc8d30afcd26bbec4e4ba2" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_5ff599c9a1b525bc0f9ab3cd480c8fe0.setContent(html_5007d676b1dc8d30afcd26bbec4e4ba2);
+            
+        
+
+        rectangle_97d447f93f6bd921ebe23808f2172027.bindPopup(popup_5ff599c9a1b525bc0f9ab3cd480c8fe0)
+        ;
+
+        
+    
+    
+            var rectangle_d4dff3984b9c799244acfbc30415048d = L.rectangle(
+                [[58.11181744464243, -101.34426379243044], [58.18053824952924, -101.21405006779926]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_2c693be614effbb0b8c0b841c6281ba9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_26e274fb15901f31325afcc44cd4dc64 = $(`<div id="html_26e274fb15901f31325afcc44cd4dc64" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Manitoba<br><b>Census Division:</b> Division No. 23<br><b>Census Subdivision:</b> Division No. 23, Unorganized</div>`)[0];
+                popup_2c693be614effbb0b8c0b841c6281ba9.setContent(html_26e274fb15901f31325afcc44cd4dc64);
+            
+        
+
+        rectangle_d4dff3984b9c799244acfbc30415048d.bindPopup(popup_2c693be614effbb0b8c0b841c6281ba9)
+        ;
+
+        
+    
+    
+            var rectangle_511073438f01051951b111a180ae9700 = L.rectangle(
+                [[64.68261951343425, -53.18631676724901], [64.75134031832107, -53.02541199638371]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_294b4ad677975021a9fecf6b08c459a2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9c3995203e032a6e7d67d885a46884ba = $(`<div id="html_9c3995203e032a6e7d67d885a46884ba" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_294b4ad677975021a9fecf6b08c459a2.setContent(html_9c3995203e032a6e7d67d885a46884ba);
+            
+        
+
+        rectangle_511073438f01051951b111a180ae9700.bindPopup(popup_294b4ad677975021a9fecf6b08c459a2)
+        ;
+
+        
+    
+    
+            var rectangle_ccda6cd7f35e7a879a64aa713d40292e = L.rectangle(
+                [[44.659047418450335, -86.70391259175283], [44.727768223337144, -86.60724259629264]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_cb75f9a0cd615044dacd34b43144dcd0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c28b307a9812de2261d648d44c8f5896 = $(`<div id="html_c28b307a9812de2261d648d44c8f5896" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario<br><b>Census Division:</b> Algoma<br><b>Census Subdivision:</b> Algoma, Unorganized, North Part</div>`)[0];
+                popup_cb75f9a0cd615044dacd34b43144dcd0.setContent(html_c28b307a9812de2261d648d44c8f5896);
+            
+        
+
+        rectangle_ccda6cd7f35e7a879a64aa713d40292e.bindPopup(popup_cb75f9a0cd615044dacd34b43144dcd0)
+        ;
+
+        
+    
+    
+            var rectangle_35c272f7291ffe89194fd671cffd3426 = L.rectangle(
+                [[42.663977593459244, -83.24058416201383], [42.73269839834605, -83.14707810573442]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_a19bd77c2b05e298e8a79258b5d65450 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a45ba09ac95c421df0ca6c241122f2a7 = $(`<div id="html_a45ba09ac95c421df0ca6c241122f2a7" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario<br><b>Census Division:</b> Essex<br><b>Census Subdivision:</b> Windsor</div>`)[0];
+                popup_a19bd77c2b05e298e8a79258b5d65450.setContent(html_a45ba09ac95c421df0ca6c241122f2a7);
+            
+        
+
+        rectangle_35c272f7291ffe89194fd671cffd3426.bindPopup(popup_a19bd77c2b05e298e8a79258b5d65450)
+        ;
+
+        
+    
+    
+            var rectangle_ec4aa78e56f70f7c932c16795ecc78a2 = L.rectangle(
+                [[64.58235141092177, -105.63161236853428], [64.6510722158086, -105.47130130647493]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_210e0cce9c5bb6f20059584a29ef3d30 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c2d16956084db700c3acba3507906afb = $(`<div id="html_c2d16956084db700c3acba3507906afb" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Kitikmeot<br><b>Census Subdivision:</b> Kitikmeot, Unorganized</div>`)[0];
+                popup_210e0cce9c5bb6f20059584a29ef3d30.setContent(html_c2d16956084db700c3acba3507906afb);
+            
+        
+
+        rectangle_ec4aa78e56f70f7c932c16795ecc78a2.bindPopup(popup_210e0cce9c5bb6f20059584a29ef3d30)
+        ;
+
+        
+    
+    
+            var rectangle_de97b68df83a3de1a0587376a326a1c7 = L.rectangle(
+                [[83.02477492731241, -128.0696654647237], [83.09349573219923, -127.50099583587581]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_759d49a43877bab42b90a14a6b5f198c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_23b4c955a18df9ecdf21ce298fb5ddda = $(`<div id="html_23b4c955a18df9ecdf21ce298fb5ddda" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_759d49a43877bab42b90a14a6b5f198c.setContent(html_23b4c955a18df9ecdf21ce298fb5ddda);
+            
+        
+
+        rectangle_de97b68df83a3de1a0587376a326a1c7.bindPopup(popup_759d49a43877bab42b90a14a6b5f198c)
+        ;
+
+        
+    
+    
+            var rectangle_669ec3c94eb0b2b129d964e25a512b3b = L.rectangle(
+                [[56.71907514809413, -113.03644790431977], [56.787795952980936, -112.91110057762302]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_d7bbd0eec4fbc187a4784a1c09845de2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_eae782747e742832985f97c7faa95dd1 = $(`<div id="html_eae782747e742832985f97c7faa95dd1" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Alberta<br><b>Census Division:</b> Division No. 17<br><b>Census Subdivision:</b> Opportunity No. 17</div>`)[0];
+                popup_d7bbd0eec4fbc187a4784a1c09845de2.setContent(html_eae782747e742832985f97c7faa95dd1);
+            
+        
+
+        rectangle_669ec3c94eb0b2b129d964e25a512b3b.bindPopup(popup_d7bbd0eec4fbc187a4784a1c09845de2)
+        ;
+
+        
+    
+    
+            var rectangle_f82176b9495221670c62c241b2b6a671 = L.rectangle(
+                [[81.35504786344029, -82.59195054229438], [81.42376866832711, -82.13294929714694]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_6fd1f351d266e755c19df7751889fa4e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1779afb0a0a169eff17826a7d28e2b31 = $(`<div id="html_1779afb0a0a169eff17826a7d28e2b31" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_6fd1f351d266e755c19df7751889fa4e.setContent(html_1779afb0a0a169eff17826a7d28e2b31);
+            
+        
+
+        rectangle_f82176b9495221670c62c241b2b6a671.bindPopup(popup_6fd1f351d266e755c19df7751889fa4e)
+        ;
+
+        
+    
+    
+            var rectangle_48c93018fe5847a6430f3ad5ca64384d = L.rectangle(
+                [[42.438251675045706, -58.082731703210435], [42.506972479932514, -57.989563607919116]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_0fca9b9f5ccb54c571d2964e5d4bf8cb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8cf3440ac2b217a616330504c5967f38 = $(`<div id="html_8cf3440ac2b217a616330504c5967f38" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nova Scotia / Nouvelle-Écosse<br><b>Census Division:</b> Halifax<br><b>Census Subdivision:</b> Halifax</div>`)[0];
+                popup_0fca9b9f5ccb54c571d2964e5d4bf8cb.setContent(html_8cf3440ac2b217a616330504c5967f38);
+            
+        
+
+        rectangle_48c93018fe5847a6430f3ad5ca64384d.bindPopup(popup_0fca9b9f5ccb54c571d2964e5d4bf8cb)
+        ;
+
+        
+    
+    
+            var rectangle_88f77684b0bfbb6d012efba1e2daab2c = L.rectangle(
+                [[62.13749856045889, -104.83030299781592], [62.206219365345696, -104.68309283026912]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_8490f9b74a2f42c0a327e71213facc83 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_eb63068f02a2bed408d3d271268c3fcd = $(`<div id="html_eb63068f02a2bed408d3d271268c3fcd" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 5<br><b>Census Subdivision:</b> Region 5, Unorganized</div>`)[0];
+                popup_8490f9b74a2f42c0a327e71213facc83.setContent(html_eb63068f02a2bed408d3d271268c3fcd);
+            
+        
+
+        rectangle_88f77684b0bfbb6d012efba1e2daab2c.bindPopup(popup_8490f9b74a2f42c0a327e71213facc83)
+        ;
+
+        
+    
+    
+            var rectangle_52ba7f92fa528ba1faa9e08bfc8c181f = L.rectangle(
+                [[44.455486831836126, -57.512189174758], [44.524207636722934, -57.41585717586553]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_05a68291535c3e1e10529ba0f9cdb666 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5a6d1b16dd02499a0ae9c686764aaf02 = $(`<div id="html_5a6d1b16dd02499a0ae9c686764aaf02" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nova Scotia / Nouvelle-Écosse<br><b>Census Division:</b> Halifax<br><b>Census Subdivision:</b> Halifax</div>`)[0];
+                popup_05a68291535c3e1e10529ba0f9cdb666.setContent(html_5a6d1b16dd02499a0ae9c686764aaf02);
+            
+        
+
+        rectangle_52ba7f92fa528ba1faa9e08bfc8c181f.bindPopup(popup_05a68291535c3e1e10529ba0f9cdb666)
+        ;
+
+        
+    
+    
+            var rectangle_ccc113b6c15355bac5949ff074650891 = L.rectangle(
+                [[69.20553465326667, -136.1163432571595], [69.27425545815349, -135.92246640590727]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_fe234b350a61d03bbfe6f13060e10bb5 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_69e2f4a7143de1e39100c1f2ed451469 = $(`<div id="html_69e2f4a7143de1e39100c1f2ed451469" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_fe234b350a61d03bbfe6f13060e10bb5.setContent(html_69e2f4a7143de1e39100c1f2ed451469);
+            
+        
+
+        rectangle_ccc113b6c15355bac5949ff074650891.bindPopup(popup_fe234b350a61d03bbfe6f13060e10bb5)
+        ;
+
+        
+    
+    
+            var rectangle_7f0559251d7dd282d5efc8a2f15c86f4 = L.rectangle(
+                [[58.57989590430703, -57.82429754906349], [58.64861670919384, -57.692344458332286]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_daab0c6c00646ee88ac0d14f9fcaf58a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_90c7648e87d117175f7502790aff7680 = $(`<div id="html_90c7648e87d117175f7502790aff7680" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_daab0c6c00646ee88ac0d14f9fcaf58a.setContent(html_90c7648e87d117175f7502790aff7680);
+            
+        
+
+        rectangle_7f0559251d7dd282d5efc8a2f15c86f4.bindPopup(popup_daab0c6c00646ee88ac0d14f9fcaf58a)
+        ;
+
+        
+    
+    
+            var rectangle_1b0c6011a34b36377f89f7662a71ff76 = L.rectangle(
+                [[69.58204018864754, -78.33906370391286], [69.65076099353436, -78.14176233525815]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_c9b3c505602377b1767c05a66a0791f3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ea690c425c25f427a777196805361d80 = $(`<div id="html_ea690c425c25f427a777196805361d80" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_c9b3c505602377b1767c05a66a0791f3.setContent(html_ea690c425c25f427a777196805361d80);
+            
+        
+
+        rectangle_1b0c6011a34b36377f89f7662a71ff76.bindPopup(popup_c9b3c505602377b1767c05a66a0791f3)
+        ;
+
+        
+    
+    
+            var rectangle_6c6f105c071fe22653e5cea9f4e31c4e = L.rectangle(
+                [[60.75690972097803, -139.6125556634342], [60.82563052586484, -139.4717322227615]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_a52c1cd05cf131a6f17433408dd8211f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1f24a545ebc3f19f5b40900d683cdf1e = $(`<div id="html_1f24a545ebc3f19f5b40900d683cdf1e" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Yukon<br><b>Census Division:</b> Yukon<br><b>Census Subdivision:</b> Yukon, Unorganized</div>`)[0];
+                popup_a52c1cd05cf131a6f17433408dd8211f.setContent(html_1f24a545ebc3f19f5b40900d683cdf1e);
+            
+        
+
+        rectangle_6c6f105c071fe22653e5cea9f4e31c4e.bindPopup(popup_a52c1cd05cf131a6f17433408dd8211f)
+        ;
+
+        
+    
+    
+            var rectangle_0eaafdc7cb89c567852f96f9cbbc2d76 = L.rectangle(
+                [[65.70556993733524, -59.24905748510159], [65.77429074222206, -59.081804375821605]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_4c265a19b079827890abbe0002b19f26 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f0413b13dfc61abf21c0fc549c778dbc = $(`<div id="html_f0413b13dfc61abf21c0fc549c778dbc" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_4c265a19b079827890abbe0002b19f26.setContent(html_f0413b13dfc61abf21c0fc549c778dbc);
+            
+        
+
+        rectangle_0eaafdc7cb89c567852f96f9cbbc2d76.bindPopup(popup_4c265a19b079827890abbe0002b19f26)
+        ;
+
+        
+    
+    
+            var rectangle_497518924c6ca2fd2ef3a11bdd651e1c = L.rectangle(
+                [[72.42379610143787, -73.03316408567721], [72.4925169063247, -72.80516044423089]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_ebd32e21f654bbe5cbc39a7e22b3ab19 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c01b79561b4f5b888345162c6eb8a77c = $(`<div id="html_c01b79561b4f5b888345162c6eb8a77c" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_ebd32e21f654bbe5cbc39a7e22b3ab19.setContent(html_c01b79561b4f5b888345162c6eb8a77c);
+            
+        
+
+        rectangle_497518924c6ca2fd2ef3a11bdd651e1c.bindPopup(popup_ebd32e21f654bbe5cbc39a7e22b3ab19)
+        ;
+
+        
+    
+    
+            var rectangle_94f5012b5fe88bb75c30e02e2e5ad1d3 = L.rectangle(
+                [[58.11982827480433, -105.05859416437703], [58.188549079691136, -104.9283511302962]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_403c8e4a868f0d7d21f946df79cd91a7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7be1be9395ce38f1ae7baa50dd54506b = $(`<div id="html_7be1be9395ce38f1ae7baa50dd54506b" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Saskatchewan<br><b>Census Division:</b> Division No. 18<br><b>Census Subdivision:</b> Division No. 18, Unorganized</div>`)[0];
+                popup_403c8e4a868f0d7d21f946df79cd91a7.setContent(html_7be1be9395ce38f1ae7baa50dd54506b);
+            
+        
+
+        rectangle_94f5012b5fe88bb75c30e02e2e5ad1d3.bindPopup(popup_403c8e4a868f0d7d21f946df79cd91a7)
+        ;
+
+        
+    
+    
+            var rectangle_1cfa406534b55d0908a1a1b9a153f7b6 = L.rectangle(
+                [[76.2633611731145, -59.12413668069194], [76.33208197800133, -58.834024645484284]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_be969bcd506fb2d23a05c586e309c3ed = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3ab96db8eb82325fbc021e10447ff976 = $(`<div id="html_3ab96db8eb82325fbc021e10447ff976" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_be969bcd506fb2d23a05c586e309c3ed.setContent(html_3ab96db8eb82325fbc021e10447ff976);
+            
+        
+
+        rectangle_1cfa406534b55d0908a1a1b9a153f7b6.bindPopup(popup_be969bcd506fb2d23a05c586e309c3ed)
+        ;
+
+        
+    
+    
+            var rectangle_3d592cc609fc3fcfa701eb6057d1b1f2 = L.rectangle(
+                [[64.6024551571169, -68.44409322284729], [64.67117596200373, -68.28366351299671]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_50f506e7b92b20b1b68850ca7d3a5b93 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5f089f5a0d242401ceccfee1ffd03187 = $(`<div id="html_5f089f5a0d242401ceccfee1ffd03187" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_50f506e7b92b20b1b68850ca7d3a5b93.setContent(html_5f089f5a0d242401ceccfee1ffd03187);
+            
+        
+
+        rectangle_3d592cc609fc3fcfa701eb6057d1b1f2.bindPopup(popup_50f506e7b92b20b1b68850ca7d3a5b93)
+        ;
+
+        
+    
+    
+            var rectangle_3adc8ec70e822049f7976ea8944cb215 = L.rectangle(
+                [[67.97517045507291, -74.1236146865784], [68.04389125995974, -73.94009119209548]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_3a886718980055e0bf7a945f78da05b3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c5e32d8ad849573d6d0f627b4b9e380a = $(`<div id="html_c5e32d8ad849573d6d0f627b4b9e380a" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_3a886718980055e0bf7a945f78da05b3.setContent(html_c5e32d8ad849573d6d0f627b4b9e380a);
+            
+        
+
+        rectangle_3adc8ec70e822049f7976ea8944cb215.bindPopup(popup_3a886718980055e0bf7a945f78da05b3)
+        ;
+
+        
+    
+    
+            var rectangle_3317bf66a3e148853ef23c64e6521a08 = L.rectangle(
+                [[73.27175922037686, -138.94816721224456], [73.34048002526369, -138.7089371357006]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_0c8b68f188e41b0798c5ce978cc63f75 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9e6c875ddee283969685148279c86c50 = $(`<div id="html_9e6c875ddee283969685148279c86c50" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_0c8b68f188e41b0798c5ce978cc63f75.setContent(html_9e6c875ddee283969685148279c86c50);
+            
+        
+
+        rectangle_3317bf66a3e148853ef23c64e6521a08.bindPopup(popup_0c8b68f188e41b0798c5ce978cc63f75)
+        ;
+
+        
+    
+    
+            var rectangle_7f620e49ca489f15a4051940df8b9a42 = L.rectangle(
+                [[80.70996017441459, -137.67423118251023], [80.77868097930141, -137.2469703407859]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_a8b75f5f226384e765798f7b26a4af11 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fb5b7ce7bca7cc1684b4b68244c53bfc = $(`<div id="html_fb5b7ce7bca7cc1684b4b68244c53bfc" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_a8b75f5f226384e765798f7b26a4af11.setContent(html_fb5b7ce7bca7cc1684b4b68244c53bfc);
+            
+        
+
+        rectangle_7f620e49ca489f15a4051940df8b9a42.bindPopup(popup_a8b75f5f226384e765798f7b26a4af11)
+        ;
+
+        
+    
+    
+            var rectangle_6717c1e7ccdbb100537295729dbf807d = L.rectangle(
+                [[75.23060104129007, -88.75760229580159], [75.2993218461769, -88.48741962599523]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_450442beb49926890ff40e74d7a50cd7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8d5ba1f536b81161d8dfc593a9a8fa82 = $(`<div id="html_8d5ba1f536b81161d8dfc593a9a8fa82" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_450442beb49926890ff40e74d7a50cd7.setContent(html_8d5ba1f536b81161d8dfc593a9a8fa82);
+            
+        
+
+        rectangle_6717c1e7ccdbb100537295729dbf807d.bindPopup(popup_450442beb49926890ff40e74d7a50cd7)
+        ;
+
+        
+    
+    
+            var rectangle_d3022f96cac8d033a0fd9f12cc08f559 = L.rectangle(
+                [[80.40969917367171, -116.2477051819733], [80.47841997855853, -115.83375056774766]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_622508a53a93d6183326b07d52ad5f1f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_30545cd61d3fe6219c18d9b5fd5663a5 = $(`<div id="html_30545cd61d3fe6219c18d9b5fd5663a5" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_622508a53a93d6183326b07d52ad5f1f.setContent(html_30545cd61d3fe6219c18d9b5fd5663a5);
+            
+        
+
+        rectangle_d3022f96cac8d033a0fd9f12cc08f559.bindPopup(popup_622508a53a93d6183326b07d52ad5f1f)
+        ;
+
+        
+    
+    
+            var rectangle_ac0377d5ba58b9ae30152881583d5303 = L.rectangle(
+                [[45.69306921487484, -70.22174864957384], [45.76179001976165, -70.12330501036138]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_3a082d719f37c8868fded10371f189a4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4fbed476a240c2706f06838345c6defa = $(`<div id="html_4fbed476a240c2706f06838345c6defa" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Quebec / Québec<br><b>Census Division:</b> Beauce-Sartigan<br><b>Census Subdivision:</b> Saint-Théophile</div>`)[0];
+                popup_3a082d719f37c8868fded10371f189a4.setContent(html_4fbed476a240c2706f06838345c6defa);
+            
+        
+
+        rectangle_ac0377d5ba58b9ae30152881583d5303.bindPopup(popup_3a082d719f37c8868fded10371f189a4)
+        ;
+
+        
+    
+    
+            var rectangle_2de6046cf316b492dd5e610348f66572 = L.rectangle(
+                [[48.731956719412324, -92.11902946145808], [48.80067752429913, -92.0147698611082]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_efffa9d6fd5074988bd036c46b8e3a5e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d38bd9642e1a9bb072abea794a0b06bd = $(`<div id="html_d38bd9642e1a9bb072abea794a0b06bd" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario<br><b>Census Division:</b> Rainy River<br><b>Census Subdivision:</b> Rainy River, Unorganized</div>`)[0];
+                popup_efffa9d6fd5074988bd036c46b8e3a5e.setContent(html_d38bd9642e1a9bb072abea794a0b06bd);
+            
+        
+
+        rectangle_2de6046cf316b492dd5e610348f66572.bindPopup(popup_efffa9d6fd5074988bd036c46b8e3a5e)
+        ;
+
+        
+    
+    
+            var rectangle_a47fb0a0810bb268f2e2cb1b6770e8ee = L.rectangle(
+                [[76.97276605804475, -93.81237898044851], [77.04148686293158, -93.50672205032804]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_6c397f655eb01b556b84f9b7aebf663a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ae9a156d8a72aefe9f08bc5ef5fcc1fe = $(`<div id="html_ae9a156d8a72aefe9f08bc5ef5fcc1fe" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_6c397f655eb01b556b84f9b7aebf663a.setContent(html_ae9a156d8a72aefe9f08bc5ef5fcc1fe);
+            
+        
+
+        rectangle_a47fb0a0810bb268f2e2cb1b6770e8ee.bindPopup(popup_6c397f655eb01b556b84f9b7aebf663a)
+        ;
+
+        
+    
+    
+            var rectangle_1fcc9bd21d49d344ebf78f6dcd0ccb62 = L.rectangle(
+                [[71.13936951783214, -123.60407318910663], [71.20809032271896, -123.39111728922586]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_a6eeb84b3070e5a47e9b8fb3062402fb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_79efeb8eb91ebbf6f4760c430f647874 = $(`<div id="html_79efeb8eb91ebbf6f4760c430f647874" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_a6eeb84b3070e5a47e9b8fb3062402fb.setContent(html_79efeb8eb91ebbf6f4760c430f647874);
+            
+        
+
+        rectangle_1fcc9bd21d49d344ebf78f6dcd0ccb62.bindPopup(popup_a6eeb84b3070e5a47e9b8fb3062402fb)
+        ;
+
+        
+    
+    
+            var rectangle_26a3d40510d1ec1fc5d7d5a11327caf7 = L.rectangle(
+                [[81.63706844640707, -60.12272074492979], [81.7057892512939, -59.64829212996076]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_129b855e641dc9681d1a64f8eebae4ac = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4f5d246ad47f581fea1cf93b7a3f1589 = $(`<div id="html_4f5d246ad47f581fea1cf93b7a3f1589" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_129b855e641dc9681d1a64f8eebae4ac.setContent(html_4f5d246ad47f581fea1cf93b7a3f1589);
+            
+        
+
+        rectangle_26a3d40510d1ec1fc5d7d5a11327caf7.bindPopup(popup_129b855e641dc9681d1a64f8eebae4ac)
+        ;
+
+        
+    
+    
+            var rectangle_ce6089b00e83f213405f4e15e611a49d = L.rectangle(
+                [[69.04588053408213, -104.79376662708702], [69.11460133896895, -104.60130380206684]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_d25ef705c7ae281acb1a862e108e7487 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e589f2403f3fd7d9c25a3da3c81d1bc1 = $(`<div id="html_e589f2403f3fd7d9c25a3da3c81d1bc1" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Kitikmeot<br><b>Census Subdivision:</b> Kitikmeot, Unorganized</div>`)[0];
+                popup_d25ef705c7ae281acb1a862e108e7487.setContent(html_e589f2403f3fd7d9c25a3da3c81d1bc1);
+            
+        
+
+        rectangle_ce6089b00e83f213405f4e15e611a49d.bindPopup(popup_d25ef705c7ae281acb1a862e108e7487)
+        ;
+
+        
+    
+    
+            var rectangle_783c4be84f5231dc8240e59d1aa11973 = L.rectangle(
+                [[78.52846626146086, -66.89008041439372], [78.59718706634769, -66.54351900092546]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_729b380bd42400b9c19c32235311ba5b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3aa669d23f71267ca43a72630c1d8285 = $(`<div id="html_3aa669d23f71267ca43a72630c1d8285" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_729b380bd42400b9c19c32235311ba5b.setContent(html_3aa669d23f71267ca43a72630c1d8285);
+            
+        
+
+        rectangle_783c4be84f5231dc8240e59d1aa11973.bindPopup(popup_729b380bd42400b9c19c32235311ba5b)
+        ;
+
+        
+    
+    
+            var rectangle_d6d196e58b4ecd3ad42aa9e883af6e43 = L.rectangle(
+                [[54.25349043331616, -131.90025187457113], [54.32221123820297, -131.78252148582308]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_06589028d2ec9fd1c73d3f344afa97f4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b40c8e84d0b392acd6b9a71feb219359 = $(`<div id="html_b40c8e84d0b392acd6b9a71feb219359" style="width: 100.0%; height: 100.0%;"><b>Province:</b> British Columbia / Colombie-Britannique<br><b>Census Division:</b> Skeena-Queen Charlotte<br><b>Census Subdivision:</b> North Coast D</div>`)[0];
+                popup_06589028d2ec9fd1c73d3f344afa97f4.setContent(html_b40c8e84d0b392acd6b9a71feb219359);
+            
+        
+
+        rectangle_d6d196e58b4ecd3ad42aa9e883af6e43.bindPopup(popup_06589028d2ec9fd1c73d3f344afa97f4)
+        ;
+
+        
+    
+    
+            var rectangle_d8f721199ed320cef6c353aa3bfe9b54 = L.rectangle(
+                [[76.20192528136366, -108.62115864187244], [76.27064608625048, -108.33231671559857]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_5bf92f2a5683eb01b81d9352989a4c9b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6fdc7c1f8b37336ae943adb936b278b0 = $(`<div id="html_6fdc7c1f8b37336ae943adb936b278b0" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_5bf92f2a5683eb01b81d9352989a4c9b.setContent(html_6fdc7c1f8b37336ae943adb936b278b0);
+            
+        
+
+        rectangle_d8f721199ed320cef6c353aa3bfe9b54.bindPopup(popup_5bf92f2a5683eb01b81d9352989a4c9b)
+        ;
+
+        
+    
+    
+            var rectangle_dd71299639873523337cf5fb76d9ee9f = L.rectangle(
+                [[79.39070465203625, -84.38424727302501], [79.45942545692307, -84.00979050177031]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_d35d8c3f13d2996f9deebaff581de38b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_da492aa977fe3a877972343ccca09ec1 = $(`<div id="html_da492aa977fe3a877972343ccca09ec1" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_d35d8c3f13d2996f9deebaff581de38b.setContent(html_da492aa977fe3a877972343ccca09ec1);
+            
+        
+
+        rectangle_dd71299639873523337cf5fb76d9ee9f.bindPopup(popup_d35d8c3f13d2996f9deebaff581de38b)
+        ;
+
+        
+    
+    
+            var rectangle_17aa504994b096ebbec1aa5b64724d6b = L.rectangle(
+                [[48.85673049720558, -59.53256374735515], [48.92545130209239, -59.428044206664616]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_76e034964463f65e125c752b3dc1dcfb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0889a15938083f06ef5b6d0d1a1ecc6e = $(`<div id="html_0889a15938083f06ef5b6d0d1a1ecc6e" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Newfoundland and Labrador / Terre-Neuve-et-Labrador<br><b>Census Division:</b> Division No.  4<br><b>Census Subdivision:</b> Division No.  4, Subd. E</div>`)[0];
+                popup_76e034964463f65e125c752b3dc1dcfb.setContent(html_0889a15938083f06ef5b6d0d1a1ecc6e);
+            
+        
+
+        rectangle_17aa504994b096ebbec1aa5b64724d6b.bindPopup(popup_76e034964463f65e125c752b3dc1dcfb)
+        ;
+
+        
+    
+    
+            var rectangle_efaad0df1edab73fd17c21b60000831a = L.rectangle(
+                [[71.65495556134258, -103.55365410639051], [71.7236763662294, -103.33491611060462]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_febafad85b74e3e3206456d968095493 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7cb1a222a741a057073b29e7c4743eca = $(`<div id="html_7cb1a222a741a057073b29e7c4743eca" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Kitikmeot<br><b>Census Subdivision:</b> Kitikmeot, Unorganized</div>`)[0];
+                popup_febafad85b74e3e3206456d968095493.setContent(html_7cb1a222a741a057073b29e7c4743eca);
+            
+        
+
+        rectangle_efaad0df1edab73fd17c21b60000831a.bindPopup(popup_febafad85b74e3e3206456d968095493)
+        ;
+
+        
+    
+    
+            var rectangle_ce5c09324dc783390e4de6e01b238896 = L.rectangle(
+                [[62.78518857968034, -96.08386662448663], [62.853909384567146, -95.93342520194489]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_5f633efa3d70950301df4e0a1a10cde9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a13fbfe566967a151bc7c3db9d7be2e3 = $(`<div id="html_a13fbfe566967a151bc7c3db9d7be2e3" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Kivalliq<br><b>Census Subdivision:</b> Kivalliq, Unorganized</div>`)[0];
+                popup_5f633efa3d70950301df4e0a1a10cde9.setContent(html_a13fbfe566967a151bc7c3db9d7be2e3);
+            
+        
+
+        rectangle_ce5c09324dc783390e4de6e01b238896.bindPopup(popup_5f633efa3d70950301df4e0a1a10cde9)
+        ;
+
+        
+    
+    
+            var rectangle_853d485a9aad15c2cc311dc024e24442 = L.rectangle(
+                [[64.3150686033969, -93.40957873176468], [64.38378940828372, -93.250826753352]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_c0fa14c1eff427902cb76a97eb904430 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_56cf2cc0e2c759486c676e6485f7bf78 = $(`<div id="html_56cf2cc0e2c759486c676e6485f7bf78" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Kivalliq<br><b>Census Subdivision:</b> Kivalliq, Unorganized</div>`)[0];
+                popup_c0fa14c1eff427902cb76a97eb904430.setContent(html_56cf2cc0e2c759486c676e6485f7bf78);
+            
+        
+
+        rectangle_853d485a9aad15c2cc311dc024e24442.bindPopup(popup_c0fa14c1eff427902cb76a97eb904430)
+        ;
+
+        
+    
+    
+            var rectangle_16ce7a929026f8e5b6686eed0ddc5e54 = L.rectangle(
+                [[78.60919585647501, -114.9339271063639], [78.67791666136183, -114.58493478189534]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_035b056d1b2b38fba57045133bc3e2d4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0697484c1b3b216c35ea15acb38e9e08 = $(`<div id="html_0697484c1b3b216c35ea15acb38e9e08" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_035b056d1b2b38fba57045133bc3e2d4.setContent(html_0697484c1b3b216c35ea15acb38e9e08);
+            
+        
+
+        rectangle_16ce7a929026f8e5b6686eed0ddc5e54.bindPopup(popup_035b056d1b2b38fba57045133bc3e2d4)
+        ;
+
+        
+    
+    
+            var rectangle_8e7453dff6108911bd64afea48e159d3 = L.rectangle(
+                [[71.32848426298861, -128.59508287596546], [71.39720506787543, -128.38004399194588]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_9b072a1df36cca0a561fa16e831fb6e3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1f4b1f16f098adbfef3672aa4e5093bb = $(`<div id="html_1f4b1f16f098adbfef3672aa4e5093bb" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_9b072a1df36cca0a561fa16e831fb6e3.setContent(html_1f4b1f16f098adbfef3672aa4e5093bb);
+            
+        
+
+        rectangle_8e7453dff6108911bd64afea48e159d3.bindPopup(popup_9b072a1df36cca0a561fa16e831fb6e3)
+        ;
+
+        
+    
+    
+            var rectangle_9b372c9461c9e6d37e653fd40ef890c8 = L.rectangle(
+                [[44.78774405739047, -76.82167222443574], [44.85646486227728, -76.72478667900354]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_f2959389022bb72d9dcd8bacc884ea11 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c9605be6aa48fa6278559b73d04886f2 = $(`<div id="html_c9605be6aa48fa6278559b73d04886f2" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario<br><b>Census Division:</b> Frontenac<br><b>Census Subdivision:</b> Central Frontenac, North Frontenac</div>`)[0];
+                popup_f2959389022bb72d9dcd8bacc884ea11.setContent(html_c9605be6aa48fa6278559b73d04886f2);
+            
+        
+
+        rectangle_9b372c9461c9e6d37e653fd40ef890c8.bindPopup(popup_f2959389022bb72d9dcd8bacc884ea11)
+        ;
+
+        
+    
+    
+            var rectangle_e028e7268c55a8adc32903a627ff71c1 = L.rectangle(
+                [[59.33338094489155, -79.62501937368947], [59.40210174977836, -79.49014733249354]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_bc393f1ec6aa473a5dfeacffba08f176 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_bc9409997b6a4b0703411f29c327cd1d = $(`<div id="html_bc9409997b6a4b0703411f29c327cd1d" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_bc393f1ec6aa473a5dfeacffba08f176.setContent(html_bc9409997b6a4b0703411f29c327cd1d);
+            
+        
+
+        rectangle_e028e7268c55a8adc32903a627ff71c1.bindPopup(popup_bc393f1ec6aa473a5dfeacffba08f176)
+        ;
+
+        
+    
+    
+            var rectangle_c745c4bb5f27b17494a2b979bb013e3b = L.rectangle(
+                [[61.34980708377236, -129.24376973831892], [61.41852788865917, -129.10028286957623]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_74955835bd04bdb7ae1e37bad0692c2d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_731d8316ec6ec72910d582bc83343a27 = $(`<div id="html_731d8316ec6ec72910d582bc83343a27" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Yukon<br><b>Census Division:</b> Yukon<br><b>Census Subdivision:</b> Yukon, Unorganized</div>`)[0];
+                popup_74955835bd04bdb7ae1e37bad0692c2d.setContent(html_731d8316ec6ec72910d582bc83343a27);
+            
+        
+
+        rectangle_c745c4bb5f27b17494a2b979bb013e3b.bindPopup(popup_74955835bd04bdb7ae1e37bad0692c2d)
+        ;
+
+        
+    
+    
+            var rectangle_22e33130b72a4c25a403e9e3c1c4a085 = L.rectangle(
+                [[52.28454931941701, -135.84288813776752], [52.35327012430382, -135.730464382706]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_3b8e4818cc21885ca5ff1cdab12796fd = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_850b149ee921e4741e724b006ce37b58 = $(`<div id="html_850b149ee921e4741e724b006ce37b58" style="width: 100.0%; height: 100.0%;"><b>Province:</b> British Columbia / Colombie-Britannique<br><b>Census Division:</b> Skeena-Queen Charlotte<br><b>Census Subdivision:</b> North Coast D</div>`)[0];
+                popup_3b8e4818cc21885ca5ff1cdab12796fd.setContent(html_850b149ee921e4741e724b006ce37b58);
+            
+        
+
+        rectangle_22e33130b72a4c25a403e9e3c1c4a085.bindPopup(popup_3b8e4818cc21885ca5ff1cdab12796fd)
+        ;
+
+        
+    
+    
+            var rectangle_cdf538b713f0727c22b72918b7d8e052 = L.rectangle(
+                [[78.83268614791223, -130.9359036425394], [78.90140695279905, -130.57999647941048]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_2c74187386f372f4a958face46a1d142 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f199ffc29a5a954f3d823f9cc9846eb7 = $(`<div id="html_f199ffc29a5a954f3d823f9cc9846eb7" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_2c74187386f372f4a958face46a1d142.setContent(html_f199ffc29a5a954f3d823f9cc9846eb7);
+            
+        
+
+        rectangle_cdf538b713f0727c22b72918b7d8e052.bindPopup(popup_2c74187386f372f4a958face46a1d142)
+        ;
+
+        
+    
+    
+            var rectangle_ed2cc72650ae28fe5c3583a46892d15d = L.rectangle(
+                [[43.493530181514274, -64.26787584557208], [43.56225098640108, -64.17309365406051]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_1ed64ea8dc3f46f6a545408c63541c30 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3925a216e3ef3822f413ef8ba556207d = $(`<div id="html_3925a216e3ef3822f413ef8ba556207d" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nova Scotia / Nouvelle-Écosse<br><b>Census Division:</b> Queens<br><b>Census Subdivision:</b> Queens</div>`)[0];
+                popup_1ed64ea8dc3f46f6a545408c63541c30.setContent(html_3925a216e3ef3822f413ef8ba556207d);
+            
+        
+
+        rectangle_ed2cc72650ae28fe5c3583a46892d15d.bindPopup(popup_1ed64ea8dc3f46f6a545408c63541c30)
+        ;
+
+        
+    
+    
+            var rectangle_3cdf1e73d61bba1a164a178be8a7029e = L.rectangle(
+                [[69.25250911117828, -56.483365556909085], [69.3212299160651, -56.28906840883585]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_fc0047aaedbe8a9db5bf8c09afae2a8b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_039db9506a8902bcf95881a8e20e68bd = $(`<div id="html_039db9506a8902bcf95881a8e20e68bd" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_fc0047aaedbe8a9db5bf8c09afae2a8b.setContent(html_039db9506a8902bcf95881a8e20e68bd);
+            
+        
+
+        rectangle_3cdf1e73d61bba1a164a178be8a7029e.bindPopup(popup_fc0047aaedbe8a9db5bf8c09afae2a8b)
+        ;
+
+        
+    
+    
+            var rectangle_982c6cefde105cd0271a0db0b61a4f59 = L.rectangle(
+                [[68.65688583895131, -90.26762267631563], [68.72560664383813, -90.07851419939118]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_41c3bfaa65e5dc9f908ec428bf1b579a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ae462c04f0b6635c5060d921fd6feacc = $(`<div id="html_ae462c04f0b6635c5060d921fd6feacc" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Kitikmeot<br><b>Census Subdivision:</b> Kitikmeot, Unorganized</div>`)[0];
+                popup_41c3bfaa65e5dc9f908ec428bf1b579a.setContent(html_ae462c04f0b6635c5060d921fd6feacc);
+            
+        
+
+        rectangle_982c6cefde105cd0271a0db0b61a4f59.bindPopup(popup_41c3bfaa65e5dc9f908ec428bf1b579a)
+        ;
+
+        
+    
+    
+            var rectangle_34c6b64d333732cbb5748b165cd6d1a2 = L.rectangle(
+                [[74.90140862252763, -71.10908690167376], [74.97012942741445, -70.84467617214635]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_6110d64b16292ff49fb8c877f2f9457f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_68fb16a503f7cc61bcb184339c34dbef = $(`<div id="html_68fb16a503f7cc61bcb184339c34dbef" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_6110d64b16292ff49fb8c877f2f9457f.setContent(html_68fb16a503f7cc61bcb184339c34dbef);
+            
+        
+
+        rectangle_34c6b64d333732cbb5748b165cd6d1a2.bindPopup(popup_6110d64b16292ff49fb8c877f2f9457f)
+        ;
+
+        
+    
+    
+            var rectangle_57c30ef277f48faba2ad76dc1692bd19 = L.rectangle(
+                [[69.00848634920867, -53.83562009993623], [69.07720715409549, -53.64348527703887]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_68bd3c72d0f30a6f219f1bbf41f24944 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b2d13a0ff9fab9d5df2df29b6922ab30 = $(`<div id="html_b2d13a0ff9fab9d5df2df29b6922ab30" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_68bd3c72d0f30a6f219f1bbf41f24944.setContent(html_b2d13a0ff9fab9d5df2df29b6922ab30);
+            
+        
+
+        rectangle_57c30ef277f48faba2ad76dc1692bd19.bindPopup(popup_68bd3c72d0f30a6f219f1bbf41f24944)
+        ;
+
+        
+    
+    
+            var rectangle_80acc99da8b8a2358089f42adc2108ba = L.rectangle(
+                [[58.68119986829232, -57.54037244229717], [58.749920673179126, -57.40803560443719]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_e73b9e52f8965478c3e61e9e7daad071 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_be7ac2459ac3a1e9417453de1b3e9266 = $(`<div id="html_be7ac2459ac3a1e9417453de1b3e9266" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_e73b9e52f8965478c3e61e9e7daad071.setContent(html_be7ac2459ac3a1e9417453de1b3e9266);
+            
+        
+
+        rectangle_80acc99da8b8a2358089f42adc2108ba.bindPopup(popup_e73b9e52f8965478c3e61e9e7daad071)
+        ;
+
+        
+    
+    
+            var rectangle_6852829d0202228e06f43a11fa53733d = L.rectangle(
+                [[80.1136757245246, -68.8830709735594], [80.18239652941142, -68.4814371597374]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_beafdd5a3bd8e2b92c21d1908e62f0a9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_10193bf9e587823fa7bfd17af7cf8b06 = $(`<div id="html_10193bf9e587823fa7bfd17af7cf8b06" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_beafdd5a3bd8e2b92c21d1908e62f0a9.setContent(html_10193bf9e587823fa7bfd17af7cf8b06);
+            
+        
+
+        rectangle_6852829d0202228e06f43a11fa53733d.bindPopup(popup_beafdd5a3bd8e2b92c21d1908e62f0a9)
+        ;
+
+        
+    
+    
+            var rectangle_77117078de176a474ab511cff8292ed3 = L.rectangle(
+                [[49.44041853238789, -118.90227122637167], [49.509139337274696, -118.79651155635072]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_2fab05c62cb43f311ac87fbaaf9dae26 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4e4c90b29ef82765b5230ef47c4f7df3 = $(`<div id="html_4e4c90b29ef82765b5230ef47c4f7df3" style="width: 100.0%; height: 100.0%;"><b>Province:</b> British Columbia / Colombie-Britannique<br><b>Census Division:</b> Kootenay Boundary<br><b>Census Subdivision:</b> Kootenay Boundary E / West Boundary</div>`)[0];
+                popup_2fab05c62cb43f311ac87fbaaf9dae26.setContent(html_4e4c90b29ef82765b5230ef47c4f7df3);
+            
+        
+
+        rectangle_77117078de176a474ab511cff8292ed3.bindPopup(popup_2fab05c62cb43f311ac87fbaaf9dae26)
+        ;
+
+        
+    
+    
+            var rectangle_244858cddad8ad661f2672950d5b204a = L.rectangle(
+                [[57.788179515777685, -98.34366777779233], [57.856900320664494, -98.21462512727295]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_4b5e589c1be4bcf9b63c1c580267f9ed = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_786b4dbf9e2c4d733c497aefde3064cc = $(`<div id="html_786b4dbf9e2c4d733c497aefde3064cc" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Manitoba<br><b>Census Division:</b> Division No. 23<br><b>Census Subdivision:</b> Division No. 23, Unorganized</div>`)[0];
+                popup_4b5e589c1be4bcf9b63c1c580267f9ed.setContent(html_786b4dbf9e2c4d733c497aefde3064cc);
+            
+        
+
+        rectangle_244858cddad8ad661f2672950d5b204a.bindPopup(popup_4b5e589c1be4bcf9b63c1c580267f9ed)
+        ;
+
+        
+    
+    
+            var rectangle_9a01bd467e31be8627b70d24ac604392 = L.rectangle(
+                [[54.7720265473299, -137.09909799304202], [54.84074735221671, -136.97986167577992]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_69135f09731258fccfc7c7ce9ceb3d6b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f3a6fdbdde0d5d2680f7d98dba982454 = $(`<div id="html_f3a6fdbdde0d5d2680f7d98dba982454" style="width: 100.0%; height: 100.0%;"><b>Province:</b> British Columbia / Colombie-Britannique<br><b>Census Division:</b> Skeena-Queen Charlotte<br><b>Census Subdivision:</b> North Coast D</div>`)[0];
+                popup_69135f09731258fccfc7c7ce9ceb3d6b.setContent(html_f3a6fdbdde0d5d2680f7d98dba982454);
+            
+        
+
+        rectangle_9a01bd467e31be8627b70d24ac604392.bindPopup(popup_69135f09731258fccfc7c7ce9ceb3d6b)
+        ;
+
+        
+    
+    
+            var rectangle_908ccf20cadbb25de2c6dc06df1fd030 = L.rectangle(
+                [[78.33893568533972, -116.01365032216356], [78.40765649022654, -115.67266244384365]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_8b4c8970eec6a6d1b6dc1e4e4a4f37d7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3ded0150c756012089e9b43baccb4722 = $(`<div id="html_3ded0150c756012089e9b43baccb4722" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_8b4c8970eec6a6d1b6dc1e4e4a4f37d7.setContent(html_3ded0150c756012089e9b43baccb4722);
+            
+        
+
+        rectangle_908ccf20cadbb25de2c6dc06df1fd030.bindPopup(popup_8b4c8970eec6a6d1b6dc1e4e4a4f37d7)
+        ;
+
+        
+    
+    
+            var rectangle_b78199bc3be9ad147c4ec5bc9a7bc3d3 = L.rectangle(
+                [[43.106164290461905, -97.6842169809703], [43.17488509534871, -97.59003745590361]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_ac65f74b84a9f8b4b33fcca94873b66b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_43f8d947d624471def9519fc772067bb = $(`<div id="html_43f8d947d624471def9519fc772067bb" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Manitoba<br><b>Census Division:</b> Division No.  3<br><b>Census Subdivision:</b> Rhineland</div>`)[0];
+                popup_ac65f74b84a9f8b4b33fcca94873b66b.setContent(html_43f8d947d624471def9519fc772067bb);
+            
+        
+
+        rectangle_b78199bc3be9ad147c4ec5bc9a7bc3d3.bindPopup(popup_ac65f74b84a9f8b4b33fcca94873b66b)
+        ;
+
+        
+    
+    
+            var rectangle_763477e4ea119d3a9c019cd1d3cd6743 = L.rectangle(
+                [[58.35750457444262, -121.80727005814428], [58.42622537932943, -121.67615021621096]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_e070e57746c11a876000bbbdc663592a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ccb18ade1f4e65d1112aa696efa3174e = $(`<div id="html_ccb18ade1f4e65d1112aa696efa3174e" style="width: 100.0%; height: 100.0%;"><b>Province:</b> British Columbia / Colombie-Britannique<br><b>Census Division:</b> Northern Rockies<br><b>Census Subdivision:</b> Northern Rockies</div>`)[0];
+                popup_e070e57746c11a876000bbbdc663592a.setContent(html_ccb18ade1f4e65d1112aa696efa3174e);
+            
+        
+
+        rectangle_763477e4ea119d3a9c019cd1d3cd6743.bindPopup(popup_e070e57746c11a876000bbbdc663592a)
+        ;
+
+        
+    
+    
+            var rectangle_64c9a7b04de65b8f3329881823a79736 = L.rectangle(
+                [[50.58359733228841, -75.31696356331395], [50.65231813717522, -75.20865454343033]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_8a18ab2dff68dc047d0e7ff082b5097d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5b973085a98fc516056bd0cea868dc39 = $(`<div id="html_5b973085a98fc516056bd0cea868dc39" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Quebec / Québec<br><b>Census Division:</b> Nord-du-Québec<br><b>Census Subdivision:</b> Eeyou Istchee Baie-James</div>`)[0];
+                popup_8a18ab2dff68dc047d0e7ff082b5097d.setContent(html_5b973085a98fc516056bd0cea868dc39);
+            
+        
+
+        rectangle_64c9a7b04de65b8f3329881823a79736.bindPopup(popup_8a18ab2dff68dc047d0e7ff082b5097d)
+        ;
+
+        
+    
+    
+            var rectangle_c72095dc61762fb06e424a430162957e = L.rectangle(
+                [[53.65512815029337, -94.03870240983818], [53.72384895518018, -93.92265153497436]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_ad64945551c687d753924e01f3fe6dbb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_666b51a4b3c6a455e625fc4c7b359e44 = $(`<div id="html_666b51a4b3c6a455e625fc4c7b359e44" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Manitoba<br><b>Census Division:</b> Division No. 22<br><b>Census Subdivision:</b> Division No. 22, Unorganized</div>`)[0];
+                popup_ad64945551c687d753924e01f3fe6dbb.setContent(html_666b51a4b3c6a455e625fc4c7b359e44);
+            
+        
+
+        rectangle_c72095dc61762fb06e424a430162957e.bindPopup(popup_ad64945551c687d753924e01f3fe6dbb)
+        ;
+
+        
+    
+    
+            var rectangle_02c2ea45244ff33ddfd1d2e9e17b7395 = L.rectangle(
+                [[42.85860571027263, -99.0421556732415], [42.927326515159436, -98.94835506885852]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_0b127800efc7aba6221d6c3500755b68 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_340cb56b34df55a9c55c1ffd29fd89c2 = $(`<div id="html_340cb56b34df55a9c55c1ffd29fd89c2" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Manitoba<br><b>Census Division:</b> Division No.  4<br><b>Census Subdivision:</b> Louise</div>`)[0];
+                popup_0b127800efc7aba6221d6c3500755b68.setContent(html_340cb56b34df55a9c55c1ffd29fd89c2);
+            
+        
+
+        rectangle_02c2ea45244ff33ddfd1d2e9e17b7395.bindPopup(popup_0b127800efc7aba6221d6c3500755b68)
+        ;
+
+        
+    
+    
+            var rectangle_a72ec9920c0d626255a1c48183567a8b = L.rectangle(
+                [[44.76555025567786, -80.97369572669015], [44.83427106056467, -80.87684745640922]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_b2732496de263b04535bdab7efd51d84 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0398a3096a0b2947b7bf08c81eb24cd3 = $(`<div id="html_0398a3096a0b2947b7bf08c81eb24cd3" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Ontario<br><b>Census Division:</b> Grey<br><b>Census Subdivision:</b> Georgian Bluffs</div>`)[0];
+                popup_b2732496de263b04535bdab7efd51d84.setContent(html_0398a3096a0b2947b7bf08c81eb24cd3);
+            
+        
+
+        rectangle_a72ec9920c0d626255a1c48183567a8b.bindPopup(popup_b2732496de263b04535bdab7efd51d84)
+        ;
+
+        
+    
+    
+            var rectangle_9e859399af389870a2e03054def9e0d5 = L.rectangle(
+                [[50.255047705950055, -118.3147620659626], [50.323768510836864, -118.20720262794948]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_71fa2ee91280516891e16ae6c52a4250 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_42ae592cb9f7b3ba1e6a7cccce7643d8 = $(`<div id="html_42ae592cb9f7b3ba1e6a7cccce7643d8" style="width: 100.0%; height: 100.0%;"><b>Province:</b> British Columbia / Colombie-Britannique<br><b>Census Division:</b> Central Kootenay, North Okanagan<br><b>Census Subdivision:</b> North Okanagan E, Central Kootenay K</div>`)[0];
+                popup_71fa2ee91280516891e16ae6c52a4250.setContent(html_42ae592cb9f7b3ba1e6a7cccce7643d8);
+            
+        
+
+        rectangle_9e859399af389870a2e03054def9e0d5.bindPopup(popup_71fa2ee91280516891e16ae6c52a4250)
+        ;
+
+        
+    
+    
+            var rectangle_7ae4b71ff03d5f44a82a5b458df895ac = L.rectangle(
+                [[69.76773086596316, -67.04108278479025], [69.83645167084998, -66.84204432150331]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_157be21935ec5119ee5538e6f33b23ab = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b495af93ea161cb48de13d2c504e3cfa = $(`<div id="html_b495af93ea161cb48de13d2c504e3cfa" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Nunavut<br><b>Census Division:</b> Qikiqtaaluk<br><b>Census Subdivision:</b> Qikiqtaaluk, Unorganized</div>`)[0];
+                popup_157be21935ec5119ee5538e6f33b23ab.setContent(html_b495af93ea161cb48de13d2c504e3cfa);
+            
+        
+
+        rectangle_7ae4b71ff03d5f44a82a5b458df895ac.bindPopup(popup_157be21935ec5119ee5538e6f33b23ab)
+        ;
+
+        
+    
+    
+            var rectangle_3487ce2a228d0eb717e0cf75840b0dcc = L.rectangle(
+                [[49.85722597330248, -139.47810290585815], [49.925946778189285, -139.3714326632306]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_c9b98c135b5e522f32893699a26a4eae = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a5cde0f1d0e84359e03c02d548f60223 = $(`<div id="html_a5cde0f1d0e84359e03c02d548f60223" style="width: 100.0%; height: 100.0%;"><b>Province:</b> British Columbia / Colombie-Britannique<br><b>Census Division:</b> Skeena-Queen Charlotte<br><b>Census Subdivision:</b> North Coast E</div>`)[0];
+                popup_c9b98c135b5e522f32893699a26a4eae.setContent(html_a5cde0f1d0e84359e03c02d548f60223);
+            
+        
+
+        rectangle_3487ce2a228d0eb717e0cf75840b0dcc.bindPopup(popup_c9b98c135b5e522f32893699a26a4eae)
+        ;
+
+        
+    
+    
+            var rectangle_72c851184fae9da8480e28f77ee7834c = L.rectangle(
+                [[75.70563716366645, -113.42773329840372], [75.77435796855328, -113.14874617056776]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "yellow", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_9ffe788218a1cbbffc01d002c014d59b);
+        
+    
+        var popup_0d1238594764616ac0de4b16969f8f58 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_cba565ed94e37145dad0abd6e60154ce = $(`<div id="html_cba565ed94e37145dad0abd6e60154ce" style="width: 100.0%; height: 100.0%;"><b>Province:</b> Northwest Territories / Territoires du Nord-Ouest<br><b>Census Division:</b> Region 1<br><b>Census Subdivision:</b> Region 1, Unorganized</div>`)[0];
+                popup_0d1238594764616ac0de4b16969f8f58.setContent(html_cba565ed94e37145dad0abd6e60154ce);
+            
+        
+
+        rectangle_72c851184fae9da8480e28f77ee7834c.bindPopup(popup_0d1238594764616ac0de4b16969f8f58)
+        ;
+
+        
+    
+</script>
+</html>
