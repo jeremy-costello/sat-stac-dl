@@ -10,7 +10,7 @@ In addition to the RCM data, it also downloads:
   - Census Division
   - Census Subdivision
 
-A web-based visualization of the downloaded bounding boxes and metadata is available here:  
+A web-based visualization of 100 example bounding boxes and metadata downloaded using this tool is available here:  
 [https://jeremy-costello.github.io/sat-stac-dl/](https://jeremy-costello.github.io/sat-stac-dl/)
 
 **NOTE:** you may have to hard refresh for the base map tiles to appear.
