@@ -208,4 +208,7 @@ __marimo__/
 
 
 # CUSTOM
-
+inputs/*
+!inputs/.gitkeep
+outputs/*
+!outputs/.gitkeep
