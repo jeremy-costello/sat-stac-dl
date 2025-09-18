@@ -40,6 +40,9 @@ NOTES
   - at least patch caching
 - position and temporal-specific "position" embedding
 - grow dataset over N epochs and then do prioritized replay
+- async download from stac APIs instead of sequential
+  - get big list of bbox, then get rcm and landcover and metadata in parallel
+  - probably only have to load the shapefiles once
 
 
 
@@ -94,9 +97,6 @@ DATA PROCESSING
     - https://open.canada.ca/data/en/dataset/a883eb14-0c0e-45c4-b8c4-b54c4a819edb/resource/12c03de6-c3f7-4f5f-bb5c-d479f2332842
 - census data too
   - https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/index2021-eng.cfm?year=21
-    - provinces and territories
-      - 12: nunavut
-      - 
 
 
 
