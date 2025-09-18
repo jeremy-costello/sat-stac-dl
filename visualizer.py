@@ -2,9 +2,9 @@ import duckdb
 import folium
 import json
 
-# Connect and query - now including the file columns
+# Connect and query - now including the geographic info
 conn = duckdb.connect('./outputs/metadata.duckdb')
-results = conn.execute("SELECT bbox, landcover_file, rcm_file FROM raster_metadata").fetchall()
+results = conn.execute("SELECT bbox, landcover_file, rcm_file, province, census_div, census_subdiv FROM raster_metadata").fetchall()
 
 # Create map
 m = folium.Map(location=[0, 0], zoom_start=2)
@@ -13,6 +13,9 @@ for row in results:
     bbox = row[0] # [min_lon, min_lat, max_lon, max_lat]
     landcover_file = row[1]
     rcm_file = row[2]
+    province = row[3]
+    census_div = row[4]
+    census_subdiv = row[5]
     
     # Determine color based on file availability
     if landcover_file is None:
@@ -25,10 +28,15 @@ for row in results:
         color = 'green'
         status = 'Both files available'
     
-    # Create rectangle
+    # Format the geographic info for display
+    province_str = ', '.join(province) if province else 'None'
+    census_div_str = ', '.join(census_div) if census_div else 'None'
+    census_subdiv_str = ', '.join(census_subdiv) if census_subdiv else 'None'
+    
+    # Create rectangle with geographic info in popup
     folium.Rectangle(
         bounds=[[bbox[1], bbox[0]], [bbox[3], bbox[2]]],
-        popup=f"BBox: {bbox}<br>Status: {status}<br>Landcover: {landcover_file}<br>RCM: {rcm_file}",
+        popup=f"<b>Province:</b> {province_str}<br><b>Census Division:</b> {census_div_str}<br><b>Census Subdivision:</b> {census_subdiv_str}",
         color=color,
         fill=True,
         fillOpacity=0.3,
