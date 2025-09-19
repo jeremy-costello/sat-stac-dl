@@ -97,7 +97,10 @@ DATA PROCESSING
     - https://open.canada.ca/data/en/dataset/a883eb14-0c0e-45c4-b8c4-b54c4a819edb/resource/12c03de6-c3f7-4f5f-bb5c-d479f2332842
 - census data too
   - https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/index2021-eng.cfm?year=21
-
+- random samples from each census subdivision seems to oversample urban areas
+  - maybe do 50/50 between completely random and census subdivision
+  - 5161 CSD, 293 CD, 13 PR
+    - 5161 * 5 + 293 * 100 + 13 * 5000 = 120105 + 250000 = 370105
 
 
 VISION TRANSFORMER PAPER

@@ -3,7 +3,7 @@ import folium
 import json
 
 # Connect and query - now including the geographic info
-conn = duckdb.connect('./data/outputs/metadata.duckdb')
+conn = duckdb.connect('./data/outputs/rcm_ard_tiles.duckdb')
 results = conn.execute("SELECT bbox, landcover_file, rcm_file, province, census_div, census_subdiv FROM raster_metadata").fetchall()
 
 m = folium.Map(

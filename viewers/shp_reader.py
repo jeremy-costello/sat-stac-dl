@@ -1,7 +1,7 @@
 import geopandas as gpd
 
 # Path to your shapefile
-shapefile_path = "./data/inputs/census_subdiv"
+shapefile_path = "./data/inputs/prov_terr"
 
 # Load shapefile
 gdf = gpd.read_file(shapefile_path)

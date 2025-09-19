@@ -5,7 +5,7 @@ import os
 # -----------------------------
 # Config
 # -----------------------------
-DB_PATH = './data/outputs/metadata.duckdb'
+DB_PATH = './data/outputs/rcm_ard_tiles.duckdb'
 OUTPUT_HTML = './data/outputs/bbox_map.html'
 
 # Connect to DB

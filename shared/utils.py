@@ -57,36 +57,37 @@ def save_with_bandnames(arr, filename, band_names=None):
                 dst.set_band_description(i, str(name))
 
 
-def sample_points_per_csd(cs_shp, n_points_per_subdiv=1, seed=None):
+def sample_points_per_geometry(shapefile, id_column, n_points_per_geom=1, seed=None):
     """
-    Sample random lon/lat points from each census subdivision and attach CSDID.
+    Sample random lon/lat points from each geometry and attach the corresponding ID.
 
     Parameters:
-        cs_shp: path to census subdivision shapefile
-        n_points_per_subdiv: int, number of points to sample per subdivision
+        shapefile: path to geometry shapefile
+        id_column: column name to get ID from
+        n_points_per_geom: int, number of points to sample per geometry
         seed: int, optional random seed for reproducibility
 
     Returns:
-        List of dicts with keys: lon, lat, CSDID
+        List of dicts with keys: lon, lat, ID
     """
     if seed is not None:
         random.seed(seed)
 
     # Load census subdivision shapefile
-    gdf_cs = gpd.read_file(cs_shp).to_crs(epsg=4326)
+    gdf_cs = gpd.read_file(shapefile).to_crs(epsg=4326)
 
     results = []
 
     for idx, row in gdf_cs.iterrows():
         geom = row.geometry
-        csd_id = row.get("CSDUID", None)
+        row_id = row.get(id_column, None)
 
-        if geom.is_empty or csd_id is None:
+        if geom.is_empty or row_id is None:
             continue
 
         minx, miny, maxx, maxy = geom.bounds
 
-        for _ in range(n_points_per_subdiv):
+        for _ in range(n_points_per_geom):
             for attempt in range(1000):
                 lon = random.uniform(minx, maxx)
                 lat = random.uniform(miny, maxy)
@@ -95,10 +96,10 @@ def sample_points_per_csd(cs_shp, n_points_per_subdiv=1, seed=None):
                     results.append({
                         "lon": lon,
                         "lat": lat,
-                        "CSDID": csd_id
+                        "ID": row_id
                     })
                     break
             else:
-                print(f"Warning: Could not sample point inside subdivision {csd_id}")
+                print(f"Warning: Could not sample point inside geometry {row_id}")
 
     return results
