@@ -1,13 +1,13 @@
 import rioxarray
-from utils import get_bbox_within_canada
-from stacs import get_rcm_data, get_landcover_data
-from metadata import features_from_bbox
+from shared.utils import get_bbox_from_point, get_random_lon_lat_within_canada
+from synced.stacs import get_rcm_data, get_landcover_data
+from synced.metadata import features_from_bbox
 
 
 SHAPEFILES = [
-    {"path": "./inputs/prov_terr", "columns": ["PRNAME", "PRUID"], "key": "PR"},
-    {"path": "./inputs/census_div", "columns": ["CDNAME", "CDUID"], "key": "CD"},
-    {"path": "./inputs/census_subdiv", "columns": ["CSDNAME", "CSDUID"], "key": "CSD"},
+    {"path": "./data/inputs/prov_terr", "columns": ["PRNAME", "PRUID"], "key": "PR"},
+    {"path": "./data/inputs/census_div", "columns": ["CDNAME", "CDUID"], "key": "CD"},
+    {"path": "./data/inputs/census_subdiv", "columns": ["CSDNAME", "CSDUID"], "key": "CSD"},
 ]
 
 
@@ -19,7 +19,13 @@ def fetch_data(resolution_m=30, tile_size=256):
         dict with bbox, deg_res, rcm, landcover, and metadata
     """
     # 1. Generate random bbox and resolution
-    bbox_info = get_bbox_within_canada(resolution_m, tile_size)
+    lon, lat = get_random_lon_lat_within_canada()
+    bbox_info = get_bbox_from_point(
+        lon=lon,
+        lat=lat,
+        resolution_m=resolution_m,
+        tile_size=tile_size
+    )
     bbox = bbox_info["bbox"]
     deg_res = bbox_info["deg_resolution"]
 

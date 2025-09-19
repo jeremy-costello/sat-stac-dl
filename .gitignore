@@ -208,9 +208,9 @@ __marimo__/
 
 
 # CUSTOM
-inputs/*
-!inputs/.gitkeep
-outputs/*
-!outputs/.gitkeep
+data/inputs/*
+!data/inputs/.gitkeep
+data/outputs/*
+!data/outputs/.gitkeep
 *.html
 !index.html

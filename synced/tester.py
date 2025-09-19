@@ -1,21 +1,27 @@
 import rioxarray
-from utils import get_bbox_within_canada, save_with_bandnames
-from stacs import get_rcm_data, get_landcover_data, get_hls_data
-from metadata import features_from_bbox
+from shared.utils import get_bbox_from_point, get_random_lon_lat_within_canada, save_with_bandnames
+from synced.stacs import get_rcm_data, get_landcover_data, get_hls_data
+from synced.metadata import features_from_bbox
 
 
 # Parameters
 resolution_m = 30
 tile_size = 256
-provinces_shapefile = "./inputs/provinces_digital"
+provinces_shapefile = "./data/inputs/provinces_digital"
 
-rcm_filename = "./outputs/rcm_tile.tif"
-landcover_filename = "./outputs/landcover_tile.tif"
-hls_filename = "./outputs/hls_tile.tif"
+rcm_filename = "./data/outputs/rcm_tile.tif"
+landcover_filename = "./data/outputs/landcover_tile.tif"
+hls_filename = "./data/outputs/hls_tile.tif"
 
 
 # 1. Generate random bbox and degree resolution
-bbox_info = get_bbox_within_canada(resolution_m, tile_size)
+lon, lat = get_random_lon_lat_within_canada()
+bbox_info = get_bbox_from_point(
+    lon=lon,
+    lat=lat,
+    resolution_m=resolution_m,
+    tile_size=tile_size
+)
 bbox = bbox_info["bbox"]
 deg_res = bbox_info["deg_resolution"]
 
@@ -53,9 +59,9 @@ else:
 
 # 5. Get metadata
 shapefiles = [
-    {"path": "./inputs/prov_terr", "columns": ["PRNAME", "PRUID"]},
-    {"path": "./inputs/census_div", "columns": ["CDNAME", "CDUID"]},
-    {"path": "./inputs/census_subdiv", "columns": ["CSDNAME", "CSDUID"]},
+    {"path": "./data/inputs/prov_terr", "columns": ["PRNAME", "PRUID"]},
+    {"path": "./data/inputs/census_div", "columns": ["CDNAME", "CDUID"]},
+    {"path": "./data/inputs/census_subdiv", "columns": ["CSDNAME", "CSDUID"]},
 ]
 
 for sf in shapefiles:

@@ -1,16 +1,16 @@
 import os
 import duckdb
 from shapely.geometry import box
-from utils import save_with_bandnames
-from fetch import fetch_data
+from shared.utils import save_with_bandnames
+from synced.fetch import fetch_data
 
 
 # Output folders
-os.makedirs("./outputs", exist_ok=True)
-os.makedirs("./outputs/rasters", exist_ok=True)
+os.makedirs("./data/outputs", exist_ok=True)
+os.makedirs("./data/outputs/rasters", exist_ok=True)
 
 # DuckDB connection
-con = duckdb.connect("outputs/metadata.duckdb")
+con = duckdb.connect("./data/outputs/metadata.duckdb")
 
 # Enable spatial extension
 # con.execute("INSTALL spatial;")
@@ -53,14 +53,14 @@ while results_collected < max_results:
     if data["rcm"] is not None:
         rcm_tile_squeezed = data["rcm"].squeeze(dim="time")
         rcm_bands = list(rcm_tile_squeezed.band.values)
-        rcm_file = f"./outputs/rasters/rcm_{record_id}.tif"
+        rcm_file = f"./data/outputs/rasters/rcm_{record_id}.tif"
         save_with_bandnames(rcm_tile_squeezed, rcm_file, rcm_bands)
 
     # --- Landcover raster ---
     landcover_file = None
     if data["landcover"] is not None:
         landcover_bands = list(data["landcover"].band.values)
-        landcover_file = f"./outputs/rasters/landcover_{record_id}.tif"
+        landcover_file = f"./data/outputs/rasters/landcover_{record_id}.tif"
         save_with_bandnames(data["landcover"], landcover_file, landcover_bands)
 
     # --- Metadata (lists) ---

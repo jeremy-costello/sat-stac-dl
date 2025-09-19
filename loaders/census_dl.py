@@ -6,15 +6,15 @@ from zipfile import ZipFile
 downloads = [
     {
         "url": "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lpr_000a21a_e.zip",
-        "folder": "./inputs/prov_terr"
+        "folder": "./data/inputs/prov_terr"
     },
     {
         "url": "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcd_000a21a_e.zip",
-        "folder": "./inputs/census_div"
+        "folder": "./data/inputs/census_div"
     },
     {
         "url": "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcsd000a21a_e.zip",
-        "folder": "./inputs/census_subdiv"
+        "folder": "./data/inputs/census_subdiv"
     },
 ]
 

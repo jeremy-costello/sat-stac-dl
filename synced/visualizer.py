@@ -3,7 +3,7 @@ import folium
 import json
 
 # Connect and query - now including the geographic info
-conn = duckdb.connect('./outputs/metadata.duckdb')
+conn = duckdb.connect('./data/outputs/metadata.duckdb')
 results = conn.execute("SELECT bbox, landcover_file, rcm_file, province, census_div, census_subdiv FROM raster_metadata").fetchall()
 
 m = folium.Map(
@@ -59,4 +59,4 @@ legend_html = '''
 '''
 m.get_root().html.add_child(folium.Element(legend_html))
 
-m.save('./outputs/bbox_map.html')
+m.save('./data/outputs/bbox_map.html')
