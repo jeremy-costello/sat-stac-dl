@@ -101,6 +101,8 @@ DATA PROCESSING
   - maybe do 50/50 between completely random and census subdivision
   - 5161 CSD, 293 CD, 13 PR
     - 5161 * 5 + 293 * 100 + 13 * 5000 = 120105 + 250000 = 370105
+- just completely use pyarrow instead of duckdb? write to parquets
+- bbox use pyarrow too like points!
 
 
 VISION TRANSFORMER PAPER

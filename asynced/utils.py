@@ -120,7 +120,7 @@ class CanadaHierarchy:
         }
 
         if csd_id is not None:
-            hierarchy["CSDUID"] = csd_id
+            hierarchy["CSDUID"] = int(csd_id)
             hierarchy["CSDNAME"] = self.csdid_to_csdname.get(str(csd_id))
             cd_id = int(str(csd_id)[:4])
             hierarchy["CDUID"] = cd_id
@@ -130,14 +130,14 @@ class CanadaHierarchy:
             hierarchy["PRNAME"] = self.prid_to_prname.get(str(pr_id))
 
         elif cd_id is not None:
-            hierarchy["CDUID"] = cd_id
+            hierarchy["CDUID"] = int(cd_id)
             hierarchy["CDNAME"] = self.cdid_to_cdname.get(str(cd_id))
             pr_id = int(str(cd_id)[:2])
             hierarchy["PRUID"] = pr_id
             hierarchy["PRNAME"] = self.prid_to_prname.get(str(pr_id))
 
         elif pr_id is not None:
-            hierarchy["PRUID"] = pr_id
+            hierarchy["PRUID"] = int(pr_id)
             hierarchy["PRNAME"] = self.prid_to_prname.get(str(pr_id))
 
         return hierarchy

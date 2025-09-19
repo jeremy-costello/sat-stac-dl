@@ -1,7 +1,13 @@
 import asyncio
+import pyarrow as pa
 from concurrent.futures import ThreadPoolExecutor
-from tqdm.asyncio import tqdm_asyncio
+from tqdm.asyncio import tqdm as tqdm_asyncio
+from tqdm import tqdm
+import duckdb
 from asynced.utils import sample_points_per_geometry, generate_random_points_async, CanadaHierarchy
+
+
+BATCH_SIZE = 1000
 
 
 def create_table(con):
@@ -28,61 +34,74 @@ def create_table(con):
         )
         """)
 
+
 async def insert_points_async(con):
     loop = asyncio.get_running_loop()
+
+    # --- 1) Sample points asynchronously ---
+    csd_points = await sample_points_per_geometry("./data/inputs/census_subdiv", "CSDUID", n_points_per_geom=5)
+    cd_points = await sample_points_per_geometry("./data/inputs/census_div", "CDUID", n_points_per_geom=100)
+    pr_points = await sample_points_per_geometry("./data/inputs/prov_terr", "PRUID", n_points_per_geom=5000)
+    rand_points = await generate_random_points_async(250_000)
+
+    all_points = []
+    for pts, src in [(csd_points, "CSD"), (cd_points, "CD"), (pr_points, "PR"), (rand_points, "RAND")]:
+        print(f"✅ {len(pts)} points sampled from {src}")
+        all_points.extend(pts)
+
+    # --- 2) Calculate hierarchies across threads ---
+    hierarchy_helper = CanadaHierarchy()
+    hierarchies = [None] * len(all_points)
+
+    def calc_hierarchy(idx_pt):
+        idx, pt = idx_pt
+        return idx, hierarchy_helper.infer_hierarchy(pt)
+
     with ThreadPoolExecutor() as executor:
-        # --- 1) Sample points per geometry asynchronously ---
-        csd_points = await sample_points_per_geometry(
-            "./data/inputs/census_subdiv", "CSDUID", n_points_per_geom=5
-        )
-        cd_points = await sample_points_per_geometry(
-            "./data/inputs/census_div", "CDUID", n_points_per_geom=100
-        )
-        pr_points = await sample_points_per_geometry(
-            "./data/inputs/prov_terr", "PRUID", n_points_per_geom=5000
-        )
+        futures = [loop.run_in_executor(executor, calc_hierarchy, (i, pt)) for i, pt in enumerate(all_points)]
+        for f in tqdm_asyncio.as_completed(futures, total=len(futures), desc="Calculating hierarchy"):
+            idx, hierarchy = await f
+            hierarchies[idx] = hierarchy
 
-        # --- 2) Sample 250k random points across Canada ---
-        rand_points = await generate_random_points_async(250000)
+    # --- 3) Construct a single PyArrow Table ---
+    # Prepare lists of column data
+    ids = list(range(1, len(all_points) + 1))
+    lons = [p["lon"] for p in all_points]
+    lats = [p["lat"] for p in all_points]
+    pr_names = [h.get("PRNAME") for h in hierarchies]
+    pr_uids = [h.get("PRUID") for h in hierarchies]
+    cd_names = [h.get("CDNAME") for h in hierarchies]
+    cd_uids = [h.get("CDUID") for h in hierarchies]
+    csd_names = [h.get("CSDNAME") for h in hierarchies]
+    csd_uids = [h.get("CSDUID") for h in hierarchies]
 
-        # --- 3) Combine all points and show counts ---
-        all_points = []
-        for pts, src in [(csd_points, "CSD"), (cd_points, "CD"), (pr_points, "PR"), (rand_points, "RAND")]:
-            print(f"✅ {len(pts)} points sampled from {src}")
-            all_points.extend(pts)
+    # Create the PyArrow Table from the column data
+    arrow_table = pa.Table.from_pydict({
+        "id": ids,
+        "lon": lons,
+        "lat": lats,
+        "province": pr_names,
+        "province_id": pr_uids,
+        "census_div": cd_names,
+        "census_div_id": cd_uids,
+        "census_subdiv": csd_names,
+        "census_subdiv_id": csd_uids
+    })
 
-        # --- 4) Insert points asynchronously into DuckDB ---
-        hierarchy_helper = CanadaHierarchy()
+    # --- 4) Perform single, high-performance insert from PyArrow Table ---
+    # Register the PyArrow Table as a view with a simpler name for the SQL command
+    # DuckDB will then do a zero-copy insert from the Arrow table
+    con.register("arrow_table_view", arrow_table)
 
-        tasks = []
-        for i, pt in enumerate(all_points, start=1):
-            hierarchy = hierarchy_helper.infer_hierarchy(pt)
-            tasks.append(
-                loop.run_in_executor(
-                    executor,
-                    con.execute,
-                    """
-                    INSERT INTO rcm_ard_tiles (
-                        id, lon, lat,
-                        province, province_id, census_div, census_div_id,
-                        census_subdiv, census_subdiv_id
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """,
-                    (
-                        i,
-                        pt["lon"],
-                        pt["lat"],
-                        hierarchy["PRNAME"],
-                        hierarchy["PRUID"],
-                        hierarchy["CDNAME"],
-                        hierarchy["CDUID"],
-                        hierarchy["CSDNAME"],
-                        hierarchy["CSDUID"],
-                    ),
-                )
-            )
+    await loop.run_in_executor(
+        None,
+        lambda: con.execute("""
+            INSERT INTO rcm_ard_tiles (
+                id, lon, lat,
+                province, province_id, census_div, census_div_id,
+                census_subdiv, census_subdiv_id
+            ) SELECT * FROM arrow_table_view
+        """)
+    )
 
-        for f in tqdm_asyncio.as_completed(tasks, total=len(tasks), desc="Inserting points"):
-            await f
-
-    print(f"🎉 Inserted {len(all_points)} points into the DB.")
+    print(f"🎉 Inserted all {len(all_points)} points into the DB.")
