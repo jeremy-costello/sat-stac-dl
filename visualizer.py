@@ -6,11 +6,9 @@ import json
 conn = duckdb.connect('./outputs/metadata.duckdb')
 results = conn.execute("SELECT bbox, landcover_file, rcm_file, province, census_div, census_subdiv FROM raster_metadata").fetchall()
 
-# Create map with a different tile provider that works with GitHub Pages
 m = folium.Map(
     location=[0, 0], 
-    zoom_start=2,
-    tiles='CartoDB positron'  # This works better with GitHub Pages
+    zoom_start=2
 )
 
 for row in results:
