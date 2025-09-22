@@ -1,11 +1,7 @@
 import os
 import asyncio
 import duckdb
-from tqdm.asyncio import tqdm_asyncio
-from concurrent.futures import ThreadPoolExecutor
-from shared.utils import get_bbox_from_point
-from asynced.stac_items import get_rcm_items, get_landcover_items
-from asynced.writers import create_table, insert_points_async
+from asynced.writers import create_table, insert_points_async, update_bboxes_async
 
 
 DB_PATH = "./data/outputs/rcm_ard_tiles.duckdb"
@@ -32,29 +28,6 @@ async def main_async(resolution_m, tile_size):
 
     con.close()
     print("🎉 Finished pipeline and stored all data in DuckDB.")
-
-
-# -----------------------------
-# Async Step 2: Update bboxes
-# -----------------------------
-async def update_bboxes_async(con, resolution_m, tile_size):
-    rows = con.execute("SELECT id, lon, lat FROM rcm_ard_tiles").fetchall()
-    loop = asyncio.get_running_loop()
-    with ThreadPoolExecutor() as executor:
-        tasks = []
-        for row in rows:
-            row_id, lon, lat = row
-            bbox_info = get_bbox_from_point(lon, lat, resolution_m, tile_size)
-            tasks.append(loop.run_in_executor(executor, con.execute, """
-                UPDATE rcm_ard_tiles SET
-                    bbox = ?, resolution_deg = ?, resolution_m = ?, tile_size = ?
-                WHERE id = ?
-            """, (list(bbox_info["bbox"]),
-                  list(bbox_info["deg_resolution"]),
-                  resolution_m, tile_size, row_id)))
-        for f in tqdm_asyncio.as_completed(tasks, total=len(tasks)):
-            await f
-    print(f"✅ Updated bbox and resolution for {len(rows)} points.")
 
 
 # # -----------------------------

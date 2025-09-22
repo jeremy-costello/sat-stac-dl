@@ -1,9 +1,8 @@
 import asyncio
 import pyarrow as pa
 from concurrent.futures import ThreadPoolExecutor
-from tqdm.asyncio import tqdm as tqdm_asyncio
-from tqdm import tqdm
-import duckdb
+from tqdm.asyncio import tqdm_asyncio
+from shared.utils import get_bbox_from_point
 from asynced.utils import sample_points_per_geometry, generate_random_points_async, CanadaHierarchy
 
 
@@ -105,3 +104,64 @@ async def insert_points_async(con):
     )
 
     print(f"🎉 Inserted all {len(all_points)} points into the DB.")
+
+
+async def update_bboxes_async(con, resolution_m, tile_size):
+    loop = asyncio.get_running_loop()
+
+    # --- 1) Fetch existing points ---
+    rows = await loop.run_in_executor(None, lambda: con.execute(
+        "SELECT id, lon, lat FROM rcm_ard_tiles"
+    ).fetchall())
+    print(f"📦 Retrieved {len(rows)} rows from DB")
+
+    # --- 2) Compute bbox/resolution across threads ---
+    def compute_bbox(row):
+        row_id, lon, lat = row
+        bbox_info = get_bbox_from_point(lon, lat, resolution_m, tile_size)
+        return {
+            "id": row_id,
+            "bbox": bbox_info["bbox"],
+            "resolution_deg": bbox_info["deg_resolution"],
+            "resolution_m": resolution_m,
+            "tile_size": tile_size
+        }
+
+    results = []
+    with ThreadPoolExecutor() as executor:
+        futures = [
+            loop.run_in_executor(executor, compute_bbox, row)
+            for row in rows
+        ]
+        for f in tqdm_asyncio.as_completed(futures, total=len(futures), desc="Calculating bboxes"):
+            result = await f
+            results.append(result)
+
+    # --- 3) Construct a single PyArrow Table ---
+    arrow_table = pa.Table.from_pydict({
+        "id": [r["id"] for r in results],
+        "bbox": [r["bbox"] for r in results],
+        "resolution_deg": [r["resolution_deg"] for r in results],
+        "resolution_m": [r["resolution_m"] for r in results],
+        "tile_size": [r["tile_size"] for r in results],
+    })
+
+    # --- 4) Perform single, high-performance update ---
+    # Register Arrow table as a view
+    con.register("bbox_table_view", arrow_table)
+
+    # Use an UPDATE .. FROM pattern so we don’t do row-by-row updates
+    await loop.run_in_executor(
+        None,
+        lambda: con.execute("""
+            UPDATE rcm_ard_tiles
+            SET bbox = v.bbox,
+                resolution_deg = v.resolution_deg,
+                resolution_m = v.resolution_m,
+                tile_size = v.tile_size
+            FROM bbox_table_view v
+            WHERE rcm_ard_tiles.id = v.id
+        """)
+    )
+
+    print(f"✅ Updated bbox and resolution for {len(rows)} points.")
