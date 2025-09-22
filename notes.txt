@@ -103,6 +103,16 @@ DATA PROCESSING
     - 5161 * 5 + 293 * 100 + 13 * 5000 = 120105 + 250000 = 370105
 - just completely use pyarrow instead of duckdb? write to parquets
 - bbox use pyarrow too like points!
+- download landcover-2020 manually and use that for landcover
+  - https://datacube-prod-data-public.s3.ca-central-1.amazonaws.com/store/land/landcover/landcover-2020-classification.tif
+- get items for RCM and then download each tile sequentially and get the tif from the bbox for the rows with that tile
+  - what about bboxes overlapping 2+ tiles?
+- column with % of nodata
+  - prithvi dropped samples with more than 1% nodata in any band
+- missing value (nodata) pixels are filled with nearest interpolation
+- land cover classes
+  - https://cec.org/files/pulications/cec_nalcms-en_final.pdf#page=20
+  - there are 19 classes (1-19)
 
 
 VISION TRANSFORMER PAPER

@@ -4,6 +4,8 @@ import geopandas as gpd
 from shapely.geometry import Point
 import asyncio
 from tqdm.asyncio import tqdm_asyncio
+from math import log2
+import numpy as np
 from concurrent.futures import ThreadPoolExecutor
 from shared.utils import get_random_lon_lat_within_canada
 
@@ -141,3 +143,12 @@ class CanadaHierarchy:
             hierarchy["PRNAME"] = self.prid_to_prname.get(str(pr_id))
 
         return hierarchy
+
+
+def compute_entropy(counts):
+    """Compute Shannon entropy from a histogram (ignoring zeros)."""
+    total = counts.sum()
+    if total == 0:
+        return 0.0
+    probs = counts / total
+    return -np.sum([p * log2(p) for p in probs if p > 0])

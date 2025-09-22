@@ -1,19 +1,22 @@
 import asyncio
 import pyarrow as pa
+from pystac_client import Client
+import numpy as np
+import rasterio
+from rasterio.enums import Resampling
 from concurrent.futures import ThreadPoolExecutor
 from tqdm.asyncio import tqdm_asyncio
 from shared.utils import get_bbox_from_point
-from asynced.utils import sample_points_per_geometry, generate_random_points_async, CanadaHierarchy
+from asynced.utils import (
+  sample_points_per_geometry, generate_random_points_async, CanadaHierarchy, compute_entropy
+)
 
 
-BATCH_SIZE = 1000
-
-
-def create_table(con):
+def create_main_table(con):
     # Create table
     con.execute("""
         CREATE TABLE IF NOT EXISTS rcm_ard_tiles (
-            id INTEGER,
+            id INTEGER PRIMARY KEY,
             lon DOUBLE,
             lat DOUBLE,
             province TEXT,
@@ -27,7 +30,6 @@ def create_table(con):
             resolution_m DOUBLE,
             tile_size INTEGER,
             rcm_items TEXT[],
-            landcover_items TEXT[],
             rcm_file TEXT,
             landcover_file TEXT
         )
@@ -165,3 +167,58 @@ async def update_bboxes_async(con, resolution_m, tile_size):
     )
 
     print(f"✅ Updated bbox and resolution for {len(rows)} points.")
+
+
+async def update_rcm_items(con):
+    loop = asyncio.get_running_loop()
+
+    # 1) Fetch all rows
+    rows = await loop.run_in_executor(
+        None, lambda: con.execute("SELECT id, bbox FROM rcm_ard_tiles").fetchall()
+    )
+    print(f"🛰️ Retrieved {len(rows)} rows for RCM update")
+
+    # Open catalog once
+    stac_url = "https://www.eodms-sgdot.nrcan-rncan.gc.ca/stac"
+    catalog = Client.open(stac_url)
+
+    # 2) Define fetch function
+    def fetch_rcm_sync(bbox):
+        search = catalog.search(
+            collections=["rcm-ard"],
+            bbox=bbox,
+            datetime="2019-06-12/2048-01-01",
+            limit=1,
+            method="GET"
+        )
+        return list(search.items())
+
+    async def fetch_rcm(row_id, bbox):
+        items = await asyncio.to_thread(fetch_rcm_sync, bbox)
+        return {"id": row_id, "rcm_items": [item.id for item in items] if items else []}
+
+    # 3) Fetch items concurrently
+    tasks = [fetch_rcm(row_id, bbox) for row_id, bbox in rows]
+    results = []
+    for f in tqdm_asyncio.as_completed(tasks, total=len(tasks), desc="Fetching RCM"):
+        result = await f
+        results.append(result)
+
+    # 4) Build PyArrow Table
+    arrow_table = pa.Table.from_pydict({
+        "id": [r["id"] for r in results],
+        "rcm_items": [r["rcm_items"] for r in results],
+    })
+
+    # 5) Register + bulk update
+    con.register("rcm_view", arrow_table)
+    await loop.run_in_executor(
+        None,
+        lambda: con.execute("""
+            UPDATE rcm_ard_tiles
+            SET rcm_items = v.rcm_items
+            FROM rcm_view v
+            WHERE rcm_ard_tiles.id = v.id
+        """)
+    )
+    print(f"✅ Updated RCM items for {len(results)} rows.")

@@ -1,10 +1,16 @@
 import os
 import asyncio
 import duckdb
-from asynced.writers import create_table, insert_points_async, update_bboxes_async
+from asynced.writers_main import (
+  create_main_table, insert_points_async, update_bboxes_async
+)
+from asynced.writers_land import (
+    create_landcover_table, update_landcover_from_tiff
+)
 
 
-DB_PATH = "./data/outputs/rcm_ard_tiles.duckdb"
+MAIN_DB_PATH = "./data/outputs/rcm_ard_tiles.duckdb"
+LANDCOVER_DB_PATH = "./data/outputs/landcover_stats.duckdb"
 RESOLUTION_M = 30
 TILE_SIZE = 256
 
@@ -18,13 +24,17 @@ os.makedirs("./data/outputs", exist_ok=True)
 # Main pipeline
 # -----------------------------
 async def main_async(resolution_m, tile_size):
-    con = duckdb.connect(DB_PATH)
+    con = duckdb.connect(MAIN_DB_PATH)
+    # create_main_table(con)
+    # await insert_points_async(con)
+    # await update_bboxes_async(con, resolution_m, tile_size)
 
-    create_table(con)
-    await insert_points_async(con)
-    await update_bboxes_async(con, resolution_m, tile_size)
-    # await update_landcover_items()
-    # await update_rcm_items()
+    landcon = duckdb.connect(LANDCOVER_DB_PATH)
+    create_landcover_table(landcon)
+    await update_landcover_from_tiff(con, landcon)
+    landcon.close()
+
+    # await update_rcm_items(con)
 
     con.close()
     print("🎉 Finished pipeline and stored all data in DuckDB.")
