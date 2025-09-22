@@ -24,3 +24,8 @@ A web-based visualization of 1000 example bounding boxes and metadata downloaded
 - Fetches associated landcover data.
 - Extracts metadata from shapefiles for provinces, census divisions, and subdivisions.
 - Stores results in a database and optionally as GeoTIFFs.
+
+## Land Cover Distribution
+I randomly sampled 5 bboxes from each census subdivision, 100 bboxes from each census division, 5000 bboxes from each province, and 250000 bboxes from the extents of Canada. Shown below is the land cover distribution of these bboxes from the 2020 Land Cover of Canada.
+
+![Land Cover Distribution](images/land_cover_dist.png)
