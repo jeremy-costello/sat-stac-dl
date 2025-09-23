@@ -11,22 +11,15 @@ os.makedirs(OUT_DIR, exist_ok=True)
 # 1. Export bboxes to GeoJSON
 con = duckdb.connect(DB_PATH)
 rows = con.execute("""
-    SELECT id, bbox, province, census_div, census_subdiv,
-           landcover_items, rcm_items
-    FROM rcm_ard_tiles
+    SELECT id, bbox, province, census_div, census_subdiv
+    FROM canada_bboxes
 """).fetchall()
 
 features = []
 for row in rows:
-    _id, bbox, province, cd, csd, landcover_items, rcm_items = row
+    _id, bbox, province, cd, csd = row
     if not bbox:
         continue
-    if not landcover_items:
-        color = "red"
-    elif not rcm_items:
-        color = "yellow"
-    else:
-        color = "green"
     features.append({
         "type": "Feature",
         "geometry": {
@@ -40,7 +33,7 @@ for row in rows:
             ]]
         },
         "properties": {"id": _id, "province": province, "census_div": cd,
-                       "census_subdiv": csd, "color": color}
+                       "census_subdiv": csd}
     })
 
 bboxes_path = "./data/outputs/bboxes.geojson"
@@ -72,7 +65,7 @@ zoom_settings = {
     "prov_terr": ["-Z", "0", "-z", "6"],
     "census_div": ["-Z", "0", "-z", "8"],
     "census_subdiv": ["-Z", "0", "-z", "10"],
-    "bboxes": ["-Z", "0", "-z", "10"],
+    "bboxes": ["-zg"],
 }
 
 for lname, path in {"bboxes": bboxes_path, **geojson_paths}.items():

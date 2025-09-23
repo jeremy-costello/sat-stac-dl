@@ -1,21 +1,20 @@
 import asyncio
 import pyarrow as pa
 from pystac_client import Client
-import numpy as np
-import rasterio
-from rasterio.enums import Resampling
+# import rasterio
 from concurrent.futures import ThreadPoolExecutor
 from tqdm.asyncio import tqdm_asyncio
 from shared.utils import get_bbox_from_point
 from asynced.utils import (
-  sample_points_per_geometry, generate_random_points_async, CanadaHierarchy, compute_entropy
+  sample_points_per_geometry, generate_random_points_async, CanadaHierarchy
 )
 
 
-def create_main_table(con):
+def create_bbox_table(con):
     # Create table
+    # should the id be auto incremented?
     con.execute("""
-        CREATE TABLE IF NOT EXISTS rcm_ard_tiles (
+        CREATE TABLE IF NOT EXISTS canada_bboxes (
             id INTEGER PRIMARY KEY,
             lon DOUBLE,
             lat DOUBLE,
@@ -28,10 +27,7 @@ def create_main_table(con):
             bbox DOUBLE[],
             resolution_deg DOUBLE[],
             resolution_m DOUBLE,
-            tile_size INTEGER,
-            rcm_items TEXT[],
-            rcm_file TEXT,
-            landcover_file TEXT
+            tile_size INTEGER
         )
         """)
 
@@ -97,7 +93,7 @@ async def insert_points_async(con):
     await loop.run_in_executor(
         None,
         lambda: con.execute("""
-            INSERT INTO rcm_ard_tiles (
+            INSERT INTO canada_bboxes (
                 id, lon, lat,
                 province, province_id, census_div, census_div_id,
                 census_subdiv, census_subdiv_id
@@ -113,7 +109,7 @@ async def update_bboxes_async(con, resolution_m, tile_size):
 
     # --- 1) Fetch existing points ---
     rows = await loop.run_in_executor(None, lambda: con.execute(
-        "SELECT id, lon, lat FROM rcm_ard_tiles"
+        "SELECT id, lon, lat FROM canada_bboxes"
     ).fetchall())
     print(f"📦 Retrieved {len(rows)} rows from DB")
 
@@ -156,13 +152,13 @@ async def update_bboxes_async(con, resolution_m, tile_size):
     await loop.run_in_executor(
         None,
         lambda: con.execute("""
-            UPDATE rcm_ard_tiles
+            UPDATE canada_bboxes
             SET bbox = v.bbox,
                 resolution_deg = v.resolution_deg,
                 resolution_m = v.resolution_m,
                 tile_size = v.tile_size
             FROM bbox_table_view v
-            WHERE rcm_ard_tiles.id = v.id
+            WHERE canada_bboxes.id = v.id
         """)
     )
 
@@ -174,7 +170,7 @@ async def update_rcm_items(con):
 
     # 1) Fetch all rows
     rows = await loop.run_in_executor(
-        None, lambda: con.execute("SELECT id, bbox FROM rcm_ard_tiles").fetchall()
+        None, lambda: con.execute("SELECT id, bbox FROM canada_bboxes").fetchall()
     )
     print(f"🛰️ Retrieved {len(rows)} rows for RCM update")
 
@@ -215,10 +211,10 @@ async def update_rcm_items(con):
     await loop.run_in_executor(
         None,
         lambda: con.execute("""
-            UPDATE rcm_ard_tiles
+            UPDATE canada_bboxes
             SET rcm_items = v.rcm_items
             FROM rcm_view v
-            WHERE rcm_ard_tiles.id = v.id
+            WHERE canada_bboxes.id = v.id
         """)
     )
     print(f"✅ Updated RCM items for {len(results)} rows.")

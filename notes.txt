@@ -113,6 +113,9 @@ DATA PROCESSING
 - land cover classes
   - https://cec.org/files/pulications/cec_nalcms-en_final.pdf#page=20
   - there are 19 classes (1-19)
+- need to worry about layover in RCM data
+  - https://natural-resources.canada.ca/maps-tools-publications/satellite-elevation-air-photos/radar-image-distortions
+  - ranges in <PerPixelMetadata> in the XML for each item
 
 
 VISION TRANSFORMER PAPER

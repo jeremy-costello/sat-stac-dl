@@ -101,13 +101,12 @@ def process_row_mp(row):
 
 
 async def update_landcover_from_tiff(
-        main_con,
-        landcover_con,
+        con,
         landcover_tiff_path="./data/inputs/landcover-2020-classification.tif"
 ):
     loop = asyncio.get_running_loop()
     rows = await loop.run_in_executor(
-        None, lambda: main_con.execute("SELECT id, bbox FROM rcm_ard_tiles").fetchall()
+        None, lambda: con.execute("SELECT id, bbox FROM canada_bboxes").fetchall()
     )
     print(f"🌍 Retrieved {len(rows)} rows for landcover stats")
 
@@ -135,8 +134,8 @@ async def update_landcover_from_tiff(
 
     arrow_table = pa.Table.from_pydict(table_dict)
 
-    landcover_con.register("landcover_view", arrow_table)
-    landcover_con.execute("""
+    con.register("landcover_view", arrow_table)
+    con.execute("""
         INSERT INTO landcover_stats
         SELECT * FROM landcover_view
     """)
