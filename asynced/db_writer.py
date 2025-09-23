@@ -34,10 +34,10 @@ async def main_async(resolution_m, tile_size):
 
     # create_landcover_table(con)
     # await update_landcover_from_tiff(con)
-    await update_census_data(con)
+    # await update_census_data(con)
 
-    # await create_rcm_ard_items_table(con)
-    # await update_rcm_items(con)
+    await create_rcm_ard_items_table(con)
+    await update_rcm_ard_items(con)
 
     con.close()
     print("🎉 Finished pipeline and stored all data in DuckDB.")

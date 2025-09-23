@@ -1,22 +1,14 @@
 import asyncio
-import itertools
-from typing import List, Dict, Any
+import aiohttp
 import pyarrow as pa
-from pystac_client import Client
 from tqdm.asyncio import tqdm as tqdm_asyncio
 
-
-# --- Batching configuration ---
-BATCH_SIZE = 500  # Adjust based on network/STAC performance
-
+# Configuration
+MAX_CONCURRENT_REQUESTS = 50
+REQUEST_TIMEOUT = 30
 
 async def create_rcm_ard_items_table(con):
-    """
-    Creates or replaces the rcm_ard_items table.
-
-    Args:
-        con: The DuckDB connection.
-    """
+    """Creates or replaces the rcm_ard_items table."""
     loop = asyncio.get_running_loop()
     await loop.run_in_executor(
         None,
@@ -29,97 +21,77 @@ async def create_rcm_ard_items_table(con):
     )
     print("✅ Created or replaced table 'rcm_ard_items'.")
 
-
-import asyncio
-import itertools
-from typing import List, Dict, Any
-
-import pyarrow as pa
-from pystac_client import Client
-from tqdm.asyncio import tqdm as tqdm_asyncio
-
-# --- Batching configuration ---
-BATCH_SIZE = 500  # Adjust based on network/STAC performance
+async def fetch_rcm_items(session: aiohttp.ClientSession, row_id: int, bbox, semaphore: asyncio.Semaphore):
+    """Fetch RCM items for a single bbox."""
+    async with semaphore:
+        try:
+            # Convert bbox to coordinate list
+            if isinstance(bbox, str):
+                coords = [float(x.strip()) for x in bbox.split(',')]
+            else:
+                coords = [float(x) for x in bbox]
+            
+            # Build request parameters
+            params = {
+                'collections': 'rcm-ard',
+                'bbox': ','.join(map(str, coords)),
+                'datetime': '2019-06-12T00:00:00Z/2048-01-01T23:59:59Z',
+                'limit': 1000  # Increased to get all features, adjust as needed
+            }
+            
+            url = "https://www.eodms-sgdot.nrcan-rncan.gc.ca/stac/search"
+            
+            async with session.get(url, params=params) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    # Extract all feature IDs
+                    feature_ids = [feature['id'] for feature in data.get('features', [])]
+                    return {"id": row_id, "rcm_items": feature_ids}
+                else:
+                    return {"id": row_id, "rcm_items": []}
+                    
+        except Exception:
+            return {"id": row_id, "rcm_items": []}
 
 async def update_rcm_ard_items(con):
-    """
-    Fetches RCM items and populates the rcm_ard_items table.
-
-    Args:
-        con: The DuckDB connection.
-    """
+    """Fetch RCM items and populate the rcm_ard_items table."""
     loop = asyncio.get_running_loop()
-    stac_url = "https://www.eodms-sgdot.nrcan-rncan.gc.ca/stac"
-
-    # 1) Fetch only necessary rows, filtered by landcover_stats, within the same DB
-    print("Executing filtered query to fetch rows for update...")
+    
+    # Get rows to process
     sql_query = """
         SELECT t.id, t.bbox
         FROM canada_bboxes AS t
         JOIN landcover_stats AS l ON t.id = l.id
         WHERE l.total_count > 0;
     """
-    rows_to_update = await loop.run_in_executor(None, lambda: con.execute(sql_query).fetchall())
-    print(f"🛰️ Retrieved {len(rows_to_update)} rows for RCM update")
-
-    if not rows_to_update:
+    
+    rows = await loop.run_in_executor(None, lambda: con.execute(sql_query).fetchall())
+    print(f"🛰️ Processing {len(rows)} rows")
+    
+    if not rows:
         print("✅ No rows to update.")
         return
 
-    # 2) Define batch fetch function for concurrent processing
-    def fetch_rcm_sync(batch_bboxes: List[str]) -> List[Dict[str, Any]]:
-        """Synchronous function to fetch RCM items for a batch of bboxes."""
-        catalog = Client.open(stac_url)
-        results = []
-        for bbox in batch_bboxes:
-            search = catalog.search(
-                collections=["rcm-ard"],
-                bbox=bbox,
-                datetime="2019-06-12/2048-01-01",
-                limit=1,
-                method="GET"
-            )
-            items = list(search.items())
-            item_ids = [item.id for item in items] if items else []
-            results.append({"rcm_items": item_ids})
-        return results
-
-    async def fetch_rcm_batched(batch_rows: List[tuple]):
-        """Asynchronously process a batch of rows."""
-        batch_ids = [row[0] for row in batch_rows]
-        batch_bboxes = [row[1] for row in batch_rows]
-        
-        batch_results = await asyncio.to_thread(fetch_rcm_sync, batch_bboxes)
-        
-        combined_results = [
-            {"id": batch_ids[i], "rcm_items": result["rcm_items"]}
-            for i, result in enumerate(batch_results)
-        ]
-        return combined_results
-
-    # 3) Process batches concurrently
-    batches = [
-        rows_to_update[i:i + BATCH_SIZE]
-        for i in range(0, len(rows_to_update), BATCH_SIZE)
-    ]
+    # Configure session and semaphore
+    semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUESTS)
+    connector = aiohttp.TCPConnector(limit=MAX_CONCURRENT_REQUESTS * 2)
+    timeout = aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)
     
-    all_results = list(itertools.chain.from_iterable(
-        await tqdm_asyncio.gather(*[fetch_rcm_batched(batch) for batch in batches],
-                                  desc="Fetching RCM in batches")
-    ))
+    # Process all requests concurrently
+    async with aiohttp.ClientSession(connector=connector, timeout=timeout) as session:
+        tasks = [fetch_rcm_items(session, row[0], row[1], semaphore) for row in rows]
+        results = await tqdm_asyncio.gather(*tasks, desc="Fetching RCM items")
 
-    # 4) Build PyArrow Table
+    # Insert results into database
     arrow_table = pa.Table.from_pydict({
-        "id": [r["id"] for r in all_results],
-        "items": [r["rcm_items"] for r in all_results],
+        "id": [r["id"] for r in results],
+        "items": [r["rcm_items"] for r in results],
     })
 
-    # 5) Register + insert into table
     con.register("rcm_view", arrow_table)
     await loop.run_in_executor(
         None,
-        lambda: con.execute("""
-            INSERT INTO rcm_ard_items BY NAME SELECT * FROM rcm_view;
-        """)
+        lambda: con.execute("INSERT INTO rcm_ard_items BY NAME SELECT * FROM rcm_view;")
     )
-    print(f"✅ Populated 'rcm_ard_items' with RCM items for {len(all_results)} rows.")
+    
+    print(f"✅ Populated table with {len(results)} rows.")
