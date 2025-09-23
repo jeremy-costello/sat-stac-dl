@@ -116,6 +116,12 @@ DATA PROCESSING
 - need to worry about layover in RCM data
   - https://natural-resources.canada.ca/maps-tools-publications/satellite-elevation-air-photos/radar-image-distortions
   - ranges in <PerPixelMetadata> in the XML for each item
+- grabbing each item
+  - bbox
+  - properties: datetime, order_key/title
+    - can create href for each asset from these
+      - f"https://rcm-ceos-ard.s3.ca-central-1.amazonaws.com/MLC/{YYYY}/{MM}/{DD}/{title}/{title[:-10]}_{asset}.tif"
+        - asset in ["RL", "RR", "bitmask", "localIncAngle", "gammaToSigmaRatio", "localContributingArea"]
 
 
 VISION TRANSFORMER PAPER
