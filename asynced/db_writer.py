@@ -9,7 +9,7 @@ from asynced.writers_land import (
     create_landcover_table, update_landcover_from_tiff
 )
 from asynced.writers_rcm import (
-    create_rcm_ard_items_table, update_rcm_ard_items
+    create_rcm_ard_tables, update_rcm_ard_tables
 )
 
 
@@ -36,8 +36,8 @@ async def main_async(resolution_m, tile_size):
     # await update_landcover_from_tiff(con)
     # await update_census_data(con)
 
-    await create_rcm_ard_items_table(con)
-    await update_rcm_ard_items(con)
+    await create_rcm_ard_tables(con)
+    await update_rcm_ard_tables(con)
 
     con.close()
     print("🎉 Finished pipeline and stored all data in DuckDB.")
