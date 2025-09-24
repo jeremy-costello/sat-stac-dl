@@ -13,7 +13,7 @@ from asynced.writers_rcm import (
 )
 
 
-DB_PATH = "./data/outputs/rcm_ard_tiles.duckdb"
+DB_PATH = "./data/outputs/rcm_ard.duckdb"
 RESOLUTION_M = 30
 TILE_SIZE = 256
 

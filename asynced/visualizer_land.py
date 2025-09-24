@@ -2,7 +2,7 @@ import duckdb
 import matplotlib.pyplot as plt
 
 # Connect to your DuckDB file (adjust path if needed)
-con = duckdb.connect("./data/outputs/rcm_ard_tiles.duckdb")
+con = duckdb.connect("./data/outputs/rcm_ard.duckdb")
 
 # Load the table into a DataFrame
 df = con.execute("SELECT * FROM landcover_stats").fetchdf()

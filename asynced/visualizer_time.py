@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # --- connect to your database ---
 # Change this line to how you connect
-con = duckdb.connect("./data/outputs/rcm_ard_tiles.duckdb")
+con = duckdb.connect("./data/outputs/rcm_ard.duckdb")
 
 # --- read datetimes ---
 df = con.execute("SELECT datetime FROM rcm_ard_properties WHERE datetime IS NOT NULL").df()

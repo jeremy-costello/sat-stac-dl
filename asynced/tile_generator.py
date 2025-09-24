@@ -4,7 +4,7 @@ import json
 import os
 import subprocess
 
-DB_PATH = "./data/outputs/rcm_ard_tiles.duckdb"
+DB_PATH = "./data/outputs/rcm_ard.duckdb"
 OUT_DIR = "./data/outputs/tiles"
 os.makedirs(OUT_DIR, exist_ok=True)
 

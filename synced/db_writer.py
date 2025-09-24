@@ -10,7 +10,7 @@ os.makedirs("./data/outputs", exist_ok=True)
 os.makedirs("./data/outputs/rasters", exist_ok=True)
 
 # DuckDB connection
-con = duckdb.connect("./data/outputs/rcm_ard_tiles.duckdb")
+con = duckdb.connect("./data/outputs/rcm_ard.duckdb")
 
 # Enable spatial extension
 # con.execute("INSTALL spatial;")

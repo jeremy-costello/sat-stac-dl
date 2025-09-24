@@ -149,3 +149,7 @@ https://arxiv.org/abs/2306.03831
 
 PhilEO PAPER
 https://arxiv.org/abs/2506.14765v3
+
+
+PRITHVI MODEL
+- https://github.com/NASA-IMPACT/Prithvi-WxC/blob/main/PrithviWxC/model.py

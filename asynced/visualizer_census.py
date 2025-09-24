@@ -4,7 +4,7 @@ import matplotlib.patches as mpatches
 import squarify
 
 # Connect to DuckDB
-con = duckdb.connect("./data/outputs/rcm_ard_tiles.duckdb")
+con = duckdb.connect("./data/outputs/rcm_ard.duckdb")
 
 # --- Province Pie Chart ---
 province_data = con.execute("""
