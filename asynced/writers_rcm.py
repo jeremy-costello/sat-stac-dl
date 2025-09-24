@@ -23,7 +23,7 @@ async def create_rcm_ard_tables(con):
         None,
         lambda: con.execute("""
             CREATE TABLE IF NOT EXISTS rcm_ard_properties (
-                id TEXT PRIMARY KEY,
+                item TEXT PRIMARY KEY,
                 datetime TEXT,
                 order_key TEXT
             );
@@ -59,7 +59,7 @@ async def fetch_rcm_items(session: aiohttp.ClientSession, row_id: int, bbox, sem
                     # Collect feature property info
                     properties = [
                         {
-                            "id": f["id"],
+                            "item": f["id"],
                             "datetime": f.get("properties", {}).get("datetime"),
                             "order_key": f.get("properties", {}).get("order_key")
                         }
@@ -115,16 +115,16 @@ async def update_rcm_ard_tables(con):
     all_properties = {}
     for r in results:
         for p in r["properties"]:
-            if p["id"] not in all_properties:  # deduplicate
-                all_properties[p["id"]] = (p["datetime"], p["order_key"])
+            if p["item"] not in all_properties:  # deduplicate
+                all_properties[p["item"]] = (p["datetime"], p["order_key"])
 
     if all_properties:
-        ids = list(all_properties.keys())
-        datetimes = [all_properties[i][0] for i in ids]
-        order_keys = [all_properties[i][1] for i in ids]
+        items = list(all_properties.keys())
+        datetimes = [all_properties[i][0] for i in items]
+        order_keys = [all_properties[i][1] for i in items]
 
         props_table = pa.Table.from_pydict({
-            "id": ids,
+            "item": items,
             "datetime": datetimes,
             "order_key": order_keys
         })
@@ -135,10 +135,10 @@ async def update_rcm_ard_tables(con):
             lambda: con.execute("""
                 INSERT INTO rcm_ard_properties
                 SELECT * FROM props_view
-                ON CONFLICT (id) DO NOTHING;
+                ON CONFLICT (item) DO NOTHING;
             """)
         )
         con.unregister("props_view")
-        print(f"✅ Added {len(ids)} new properties to 'rcm_ard_properties'.")
+        print(f"✅ Added {len(items)} new properties to 'rcm_ard_properties'.")
 
     print(f"✅ Populated 'rcm_ard_items' with {len(results)} rows.")
