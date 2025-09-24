@@ -47,3 +47,8 @@ Shown below are the top 20 census divisions of these bboxes from the 2021 Census
 Shown below are the top 20 census subdivisions of these bboxes from the 2021 Census of Canada.
 
 ![Census Subdivisions](images/csd_dist.png)
+
+### Datetime Distribution
+Shown below is the datetime distribution of collection items represented in the data sample.
+
+![Datetime Distribution](images/time_dist.png)
