@@ -6,6 +6,7 @@ from rasterio.windows import from_bounds
 import numpy as np
 from pyproj import Transformer
 from tqdm.asyncio import tqdm
+import os
 
 # --- CONFIG ---
 RCM_TABLE_SOURCE = "rcm_ard_items"
@@ -14,7 +15,8 @@ RCM_TABLE_TARGET = "rcm_ard_tiles"
 BBOX_TABLE = "canada_bboxes"
 OUTPUT_DIR = Path("./data/outputs/rcm_tiles")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-FILTER_PROVINCE_ID = 10   # or None
+FILTER_PRUID = None
+FILTER_CDUID = 1001
 BAND_MAP = {"rl": "RL", "rr": "RR"}  # asset mappings
 
 
@@ -93,7 +95,12 @@ def crop_tiff(input_tif, bbox_latlon, out_path):
 
 async def download_rcm_tiles(con):
     # Step 1: get unique items + their datetime & order_key
-    filter_clause = f"AND c.province_id = {FILTER_PROVINCE_ID}" if FILTER_PROVINCE_ID else ""
+    filter_clause = ""
+    if FILTER_PRUID:
+        filter_clause += f"AND c.province_id = {FILTER_PRUID}"
+    elif FILTER_CDUID:
+        filter_clause += f"AND c.census_div_id = {FILTER_CDUID}"
+        
     df_items = con.execute(f"""
         SELECT DISTINCT unnest(r.items) as item
         FROM {RCM_TABLE_SOURCE} r
@@ -118,6 +125,12 @@ async def download_rcm_tiles(con):
             merged_path = OUTPUT_DIR / f"{item}_merged.tif"
             if not merged_path.exists():
                 combine_bands(band_files["rr"], band_files["rl"], merged_path)
+                # ✅ Remove single-band files after merge
+                for f in band_files.values():
+                    try:
+                        os.remove(f)
+                    except FileNotFoundError:
+                        pass
 
             # Step 3: get all IDs using this item
             ids = con.execute(f"""
@@ -138,3 +151,9 @@ async def download_rcm_tiles(con):
                     INSERT INTO {RCM_TABLE_TARGET} (id, item, rl_nodata_pct, rr_nodata_pct, filepath)
                     VALUES (?, ?, ?, ?, ?)
                 """, [row_id, item, nodata_pcts[1], nodata_pcts[0], str(out_crop)])
+
+            # ✅ Remove merged file after all crops are done
+            try:
+                os.remove(merged_path)
+            except FileNotFoundError:
+                pass
