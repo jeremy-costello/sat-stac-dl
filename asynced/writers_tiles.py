@@ -42,18 +42,22 @@ async def download_file(session, url, out_path):
 
 
 async def download_bands(item, datetime, order_key, session):
-    """Download RL and RR tif for one item."""
+    """Download RL and RR tif for one item into its own folder."""
     date = pd.to_datetime(datetime)
     yyyy, mm, dd = date.strftime("%Y"), date.strftime("%m"), date.strftime("%d")
     base = order_key.replace("_CH_CV_MLC", "")
-    out_files = {}
 
+    # Create folder for this item
+    item_dir = OUTPUT_DIR / item
+    item_dir.mkdir(parents=True, exist_ok=True)
+
+    out_files = {}
     for k, band in BAND_MAP.items():
         url = (
             f"https://rcm-ceos-ard.s3.ca-central-1.amazonaws.com/MLC/"
             f"{yyyy}/{mm}/{dd}/{order_key}/{base}_{band}.tif"
         )
-        out_path = OUTPUT_DIR / f"{item}_{band}.tif"
+        out_path = item_dir / f"{item}_{band}.tif"
         if not out_path.exists():
             await download_file(session, url, out_path)
         out_files[k] = out_path
@@ -122,28 +126,30 @@ async def download_rcm_tiles(con):
             datetime, order_key = props_map[item]
             band_files = await download_bands(item, datetime, order_key, session)
 
-            merged_path = OUTPUT_DIR / f"{item}_merged.tif"
+            # merged path inside item folder
+            item_dir = OUTPUT_DIR / item
+            merged_path = item_dir / f"{item}_merged.tif"
             if not merged_path.exists():
                 combine_bands(band_files["rr"], band_files["rl"], merged_path)
-                # ✅ Remove single-band files after merge
+                # Remove single-band files after merge
                 for f in band_files.values():
                     try:
                         os.remove(f)
                     except FileNotFoundError:
                         pass
 
-            # Step 3: get all IDs using this item
+            # Get all IDs using this item
             ids = con.execute(f"""
                 SELECT id FROM {RCM_TABLE_SOURCE} 
                 WHERE list_contains(items, '{item}')
             """).df()["id"]
 
             for row_id in tqdm(ids, desc=f"Cropping {item}", leave=False):
-                # Step 4: crop
+                # Crop
                 bbox = con.execute(f"SELECT bbox FROM {BBOX_TABLE} WHERE id = {row_id}").fetchone()[0]
                 bbox = [float(x) for x in bbox.split(",")] if isinstance(bbox, str) else bbox
 
-                out_crop = OUTPUT_DIR / f"{item}_{row_id}.tif"
+                out_crop = item_dir / f"{item}_{row_id}.tif"
                 nodata_pcts = crop_tiff(merged_path, bbox, out_crop)
 
                 # Insert into target table
@@ -152,7 +158,7 @@ async def download_rcm_tiles(con):
                     VALUES (?, ?, ?, ?, ?)
                 """, [row_id, item, nodata_pcts[1], nodata_pcts[0], str(out_crop)])
 
-            # ✅ Remove merged file after all crops are done
+            # Remove merged file after all crops are done
             try:
                 os.remove(merged_path)
             except FileNotFoundError:
