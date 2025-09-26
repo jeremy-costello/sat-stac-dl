@@ -19,10 +19,10 @@ BBOX_TABLE = "canada_bboxes"
 OUTPUT_DIR = Path("./data/outputs/rcm_tiles")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 FILTER_PRUID = None
-FILTER_CDUID = 1001
+FILTER_CDUID = 1006
 BAND_MAP = {"rl": "RL", "rr": "RR"}  # asset mappings
 NODATA_CUTOFF = 0.01
-ITEMS_PER_ID = 2
+ITEMS_PER_ID = 5
 
 
 async def create_rcm_ard_tiles_table(con):
