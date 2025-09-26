@@ -3,6 +3,7 @@ import aiohttp
 from pathlib import Path
 import rasterio
 from rasterio.windows import from_bounds
+from rasterio.fill import fillnodata
 import numpy as np
 from pyproj import Transformer
 from tqdm.asyncio import tqdm
@@ -18,6 +19,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 FILTER_PRUID = None
 FILTER_CDUID = 1001
 BAND_MAP = {"rl": "RL", "rr": "RR"}  # asset mappings
+NODATA_CUTOFF = 0.01
 
 
 async def create_rcm_ard_tiles_table(con):
@@ -89,12 +91,34 @@ def crop_tiff(input_tif, bbox_latlon, out_path):
             width=data.shape[2], height=data.shape[1],
             transform=src.window_transform(window)
         )
-        with rasterio.open(out_path, "w", **meta) as dst:
-            dst.write(data)
-        # compute nodata %
+
+        # --- Compute nodata fraction (0–1) ---
         nodata_val = src.nodata if src.nodata is not None else 0
-        nodata_pct = [(np.count_nonzero(b == nodata_val) / b.size) * 100 for b in data]
-    return nodata_pct
+        nodata_frac = [(np.count_nonzero(b == nodata_val) / b.size) for b in data]
+
+        # --- Check cutoff ---
+        if any(frac > NODATA_CUTOFF for frac in nodata_frac):
+            return nodata_frac, None  # skip saving, return fractions only
+
+        # --- Fill nodata if below cutoff ---
+        filled_data = np.empty_like(data)
+        for i in range(data.shape[0]):  # loop over bands
+            band = data[i].astype(np.float32)
+            mask = band != nodata_val
+            filled_band = fillnodata(
+                band,
+                mask=mask.astype(np.uint8),
+                max_search_distance=100,
+                smoothing_iterations=0,
+                nodata=nodata_val
+            )
+            filled_data[i] = filled_band
+
+        # Save filled tif
+        with rasterio.open(out_path, "w", **meta) as dst:
+            dst.write(filled_data)
+
+    return nodata_frac, str(out_path)
 
 
 async def download_rcm_tiles(con):
@@ -145,18 +169,17 @@ async def download_rcm_tiles(con):
             """).df()["id"]
 
             for row_id in tqdm(ids, desc=f"Cropping {item}", leave=False):
-                # Crop
                 bbox = con.execute(f"SELECT bbox FROM {BBOX_TABLE} WHERE id = {row_id}").fetchone()[0]
                 bbox = [float(x) for x in bbox.split(",")] if isinstance(bbox, str) else bbox
 
                 out_crop = item_dir / f"{item}_{row_id}.tif"
-                nodata_pcts = crop_tiff(merged_path, bbox, out_crop)
+                nodata_fracs, out_path = crop_tiff(merged_path, bbox, out_crop)
 
                 # Insert into target table
                 con.execute(f"""
                     INSERT INTO {RCM_TABLE_TARGET} (id, item, rl_nodata_pct, rr_nodata_pct, filepath)
                     VALUES (?, ?, ?, ?, ?)
-                """, [row_id, item, nodata_pcts[1], nodata_pcts[0], str(out_crop)])
+                """, [row_id, item, nodata_fracs[1], nodata_fracs[0], out_path])
 
             # Remove merged file after all crops are done
             try:

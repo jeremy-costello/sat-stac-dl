@@ -2,7 +2,7 @@ import duckdb
 import pandas as pd
 
 
-TABLE_NAME = "rcm_ard_properties"
+TABLE_NAME = "rcm_ard_tiles"
 
 
 pd.set_option('display.max_columns', None)
