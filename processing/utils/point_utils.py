@@ -1,13 +1,22 @@
-import json
 import random
 import geopandas as gpd
 from shapely.geometry import Point
 import asyncio
 from tqdm.asyncio import tqdm_asyncio
-from math import log2
-import numpy as np
 from concurrent.futures import ThreadPoolExecutor
-from shared.utils import get_random_lon_lat_within_canada
+from processing.utils.bbox_utils import get_random_lon_lat_within_canada
+
+
+CANADA_BBOX = [-141.002, 41.676, -52.63, 83.136]  # lon/lat bounds
+
+
+def get_random_lon_lat_within_canada():
+    """
+    Returns a random (lon, lat) within Canada bounds.
+    """
+    lon = random.uniform(CANADA_BBOX[0], CANADA_BBOX[2])
+    lat = random.uniform(CANADA_BBOX[1], CANADA_BBOX[3])
+    return lon, lat
 
 
 async def sample_points_per_geometry(shapefile, id_column, n_points_per_geom=1, seed=None, max_concurrent=100):
@@ -29,7 +38,6 @@ async def sample_points_per_geometry(shapefile, id_column, n_points_per_geom=1, 
 
     gdf = gpd.read_file(shapefile).to_crs(epsg=4326)
 
-    loop = asyncio.get_running_loop()
     sem = asyncio.Semaphore(max_concurrent)
 
     async def process_geometry(row):
@@ -87,68 +95,3 @@ async def generate_random_points_async(n_points, seed=None, n_workers=8):
         for f in tqdm_asyncio.as_completed(futures, total=n_workers, desc="Sampling random points"):
             results.extend(await f)
     return results[:n_points]
-
-
-class CanadaHierarchy:
-    def __init__(self, pr_map="./data/inputs/PR_mapping.json",
-                       cd_map="./data/inputs/CD_mapping.json",
-                       csd_map="./data/inputs/CSD_mapping.json"):
-        # Load mappings once
-        with open(pr_map) as f:
-            self.prid_to_prname = json.load(f)
-        with open(cd_map) as f:
-            self.cdid_to_cdname = json.load(f)
-        with open(csd_map) as f:
-            self.csdid_to_csdname = json.load(f)
-
-    def infer_hierarchy(self, pt):
-        """
-        Given a sampled point dict, infer the hierarchical IDs and names
-        for province, census division, and census subdivision.
-        Returns a dictionary with keys: PRUID, PRNAME, CDUID, CDNAME, CSDUID, CSDNAME.
-        Missing values are set to None.
-        """
-        csd_id = pt.get("CSDUID")
-        cd_id = pt.get("CDUID")
-        pr_id = pt.get("PRUID")
-
-        hierarchy = {
-            "PRUID": None,
-            "PRNAME": None,
-            "CDUID": None,
-            "CDNAME": None,
-            "CSDUID": None,
-            "CSDNAME": None
-        }
-
-        if csd_id is not None:
-            hierarchy["CSDUID"] = int(csd_id)
-            hierarchy["CSDNAME"] = self.csdid_to_csdname.get(str(csd_id))
-            cd_id = int(str(csd_id)[:4])
-            hierarchy["CDUID"] = cd_id
-            hierarchy["CDNAME"] = self.cdid_to_cdname.get(str(cd_id))
-            pr_id = int(str(csd_id)[:2])
-            hierarchy["PRUID"] = pr_id
-            hierarchy["PRNAME"] = self.prid_to_prname.get(str(pr_id))
-
-        elif cd_id is not None:
-            hierarchy["CDUID"] = int(cd_id)
-            hierarchy["CDNAME"] = self.cdid_to_cdname.get(str(cd_id))
-            pr_id = int(str(cd_id)[:2])
-            hierarchy["PRUID"] = pr_id
-            hierarchy["PRNAME"] = self.prid_to_prname.get(str(pr_id))
-
-        elif pr_id is not None:
-            hierarchy["PRUID"] = int(pr_id)
-            hierarchy["PRNAME"] = self.prid_to_prname.get(str(pr_id))
-
-        return hierarchy
-
-
-def compute_entropy(counts):
-    """Compute Shannon entropy from a histogram (ignoring zeros)."""
-    total = counts.sum()
-    if total == 0:
-        return 0.0
-    probs = counts / total
-    return -np.sum([p * log2(p) for p in probs if p > 0])

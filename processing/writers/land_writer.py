@@ -6,7 +6,7 @@ from rasterio.enums import Resampling
 from pyproj import Transformer
 from concurrent.futures import ProcessPoolExecutor
 from tqdm.asyncio import tqdm_asyncio
-from asynced.utils import compute_entropy
+from processing.utils.landcover_utils import compute_entropy
 
 # Global variables for the worker processes
 RASTER_SRC = None

@@ -1,13 +1,13 @@
 import asyncio
 import pyarrow as pa
 from pystac_client import Client
-# import rasterio
 from concurrent.futures import ThreadPoolExecutor
 from tqdm.asyncio import tqdm_asyncio
-from shared.utils import get_bbox_from_point
-from asynced.utils import (
-  sample_points_per_geometry, generate_random_points_async, CanadaHierarchy
+from processing.utils.bbox_utils import get_bbox_from_point
+from processing.utils.point_utils import (
+  sample_points_per_geometry, generate_random_points_async
 )
+from processing.utils.census_utils import CanadaHierarchy
 
 
 def create_bbox_table(con):

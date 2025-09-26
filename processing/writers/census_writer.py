@@ -3,7 +3,7 @@ import geopandas as gpd
 import pandas as pd
 from multiprocessing import Pool, cpu_count
 import asyncio
-from asynced.utils import CanadaHierarchy
+from processing.utils.census_utils import CanadaHierarchy
 
 # Instantiate hierarchy helper once (multiprocess-safe)
 hierarchy = CanadaHierarchy()

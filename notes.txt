@@ -151,5 +151,9 @@ PhilEO PAPER
 https://arxiv.org/abs/2506.14765v3
 
 
-PRITHVI MODEL
+PRITHVI WxC MODEL
 - https://github.com/NASA-IMPACT/Prithvi-WxC/blob/main/PrithviWxC/model.py
+  - uses fourier position encodings based on lat/long
+  - trained on MERRA-2 data
+    - https://disc.gsfc.nasa.gov/datasets?project=MERRA-2
+  - how does it do time encoding?
