@@ -4,7 +4,6 @@ from shapely.geometry import Point
 import asyncio
 from tqdm.asyncio import tqdm_asyncio
 from concurrent.futures import ThreadPoolExecutor
-from processing.utils.bbox_utils import get_random_lon_lat_within_canada
 
 
 CANADA_BBOX = [-141.002, 41.676, -52.63, 83.136]  # lon/lat bounds

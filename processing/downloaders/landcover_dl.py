@@ -2,6 +2,7 @@ import os
 import requests
 from tqdm import tqdm
 
+
 def download_tiff(url: str, save_dir: str = "./data/inputs") -> str:
     # Ensure save directory exists
     os.makedirs(save_dir, exist_ok=True)

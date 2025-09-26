@@ -8,6 +8,8 @@ import numpy as np
 from pyproj import Transformer
 from tqdm.asyncio import tqdm
 import os
+import random
+from collections import defaultdict
 
 # --- CONFIG ---
 RCM_TABLE_SOURCE = "rcm_ard_items"
@@ -20,6 +22,7 @@ FILTER_PRUID = None
 FILTER_CDUID = 1001
 BAND_MAP = {"rl": "RL", "rr": "RR"}  # asset mappings
 NODATA_CUTOFF = 0.01
+ITEMS_PER_ID = 2
 
 
 async def create_rcm_ard_tiles_table(con):
@@ -124,25 +127,40 @@ def crop_tiff(input_tif, bbox_latlon, out_path):
 async def download_rcm_tiles(con):
     # Step 1: get unique items + their datetime & order_key
     filter_clause = ""
-    if FILTER_PRUID:
-        filter_clause += f"AND c.province_id = {FILTER_PRUID}"
-    elif FILTER_CDUID:
+    if FILTER_CDUID:
         filter_clause += f"AND c.census_div_id = {FILTER_CDUID}"
+    elif FILTER_PRUID:
+        filter_clause += f"AND c.province_id = {FILTER_PRUID}"
         
-    df_items = con.execute(f"""
-        SELECT DISTINCT unnest(r.items) as item
+    df_ids = con.execute(f"""
+        SELECT r.id, r.items
         FROM {RCM_TABLE_SOURCE} r
         JOIN {BBOX_TABLE} c ON r.id = c.id
         WHERE array_length(r.items) > 0
         {filter_clause}
     """).df()
 
+    id_to_items = dict()
+    for row in df_ids.itertuples():
+        row_id = row.id
+        items = list(row.items)
+        if ITEMS_PER_ID is not None:
+            sampled = random.sample(items, min(ITEMS_PER_ID, len(items)))
+            id_to_items[row_id] = sampled
+        else:
+            id_to_items[row_id] = items
+    
+    item_to_ids = defaultdict(list)
+    for row_id, items in id_to_items.items():
+        for item in items:
+            item_to_ids[item].append(row_id)
+
     # Get datetime/order_key mapping for each item
     props = con.execute(f"SELECT item, datetime, order_key FROM {RCM_TABLE_PROPS}").df()
     props_map = {row.item: (row.datetime, row.order_key) for row in props.itertuples()}
 
     async with aiohttp.ClientSession() as session:
-        for item in tqdm(df_items["item"], desc="Processing items"):
+        for item in tqdm(item_to_ids.keys(), desc="Processing items"):
             if item not in props_map:
                 print(f"⚠️ Skipping {item}, no properties found.")
                 continue
@@ -162,13 +180,8 @@ async def download_rcm_tiles(con):
                     except FileNotFoundError:
                         pass
 
-            # Get all IDs using this item
-            ids = con.execute(f"""
-                SELECT id FROM {RCM_TABLE_SOURCE} 
-                WHERE list_contains(items, '{item}')
-            """).df()["id"]
-
-            for row_id in tqdm(ids, desc=f"Cropping {item}", leave=False):
+            # Process only the IDs that sampled this item
+            for row_id in tqdm(item_to_ids[item], desc=f"Cropping {item}", leave=False):
                 bbox = con.execute(f"SELECT bbox FROM {BBOX_TABLE} WHERE id = {row_id}").fetchone()[0]
                 bbox = [float(x) for x in bbox.split(",")] if isinstance(bbox, str) else bbox
 

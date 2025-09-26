@@ -122,6 +122,9 @@ DATA PROCESSING
     - can create href for each asset from these
       - f"https://rcm-ceos-ard.s3.ca-central-1.amazonaws.com/MLC/{YYYY}/{MM}/{DD}/{title}/{title[:-10]}_{asset}.tif"
         - asset in ["RL", "RR", "bitmask", "localIncAngle", "gammaToSigmaRatio", "localContributingArea"]
+- tile_writer isn't exactly correct. should be way to truncate items
+  - should only download N items per id, not all
+  - this is fixed now
 
 
 VISION TRANSFORMER PAPER

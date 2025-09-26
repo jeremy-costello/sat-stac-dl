@@ -10,6 +10,12 @@ from processing.utils.point_utils import (
 from processing.utils.census_utils import CanadaHierarchy
 
 
+POINTS_PER_CSD = 2  # 5161 per
+POINTS_PER_CD = 40  # 293 per
+POINTS_PER_PR = 1000  # 13 per
+POINTS_OVER_CANADA = 25_000  # 1 per
+
+
 def create_bbox_table(con):
     # Create table
     # should the id be auto incremented?
@@ -36,10 +42,10 @@ async def insert_points_async(con):
     loop = asyncio.get_running_loop()
 
     # --- 1) Sample points asynchronously ---
-    csd_points = await sample_points_per_geometry("./data/inputs/census_subdiv", "CSDUID", n_points_per_geom=5)
-    cd_points = await sample_points_per_geometry("./data/inputs/census_div", "CDUID", n_points_per_geom=100)
-    pr_points = await sample_points_per_geometry("./data/inputs/prov_terr", "PRUID", n_points_per_geom=5000)
-    rand_points = await generate_random_points_async(250_000)
+    csd_points = await sample_points_per_geometry("./data/inputs/census_subdiv", "CSDUID", n_points_per_geom=POINTS_PER_CSD)
+    cd_points = await sample_points_per_geometry("./data/inputs/census_div", "CDUID", n_points_per_geom=40)
+    pr_points = await sample_points_per_geometry("./data/inputs/prov_terr", "PRUID", n_points_per_geom=1000)
+    rand_points = await generate_random_points_async(25_000)
 
     all_points = []
     for pts, src in [(csd_points, "CSD"), (cd_points, "CD"), (pr_points, "PR"), (rand_points, "RAND")]:
