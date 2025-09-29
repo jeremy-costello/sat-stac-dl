@@ -154,9 +154,32 @@ PhilEO PAPER
 https://arxiv.org/abs/2506.14765v3
 
 
+PRITHVI EO 2.0 MODEL
+https://github.com/NASA-IMPACT/Prithvi-EO-2.0
+https://github.com/IBM/terratorch/blob/main/terratorch/models/backbones/prithvi_mae.py
+
+
+
 PRITHVI WxC MODEL
-- https://github.com/NASA-IMPACT/Prithvi-WxC/blob/main/PrithviWxC/model.py
-  - uses fourier position encodings based on lat/long
-  - trained on MERRA-2 data
-    - https://disc.gsfc.nasa.gov/datasets?project=MERRA-2
-  - how does it do time encoding?
+https://github.com/NASA-IMPACT/Prithvi-WxC/blob/main/PrithviWxC/model.py
+- uses fourier position encodings based on lat/long
+- trained on MERRA-2 data
+  - https://disc.gsfc.nasa.gov/datasets?project=MERRA-2
+- how does it do time encoding?
+- based on two models
+  - "Hiera: A Hierarchical Vision Transformer without the Bells-and-Whistles"
+    - https://arxiv.org/abs/2306.00989
+    - https://github.com/facebookresearch/hiera
+  - "MaxViT: Multi-Axis Vision Transformer"
+    - https://arxiv.org/abs/2204.01697
+    - https://github.com/google-research/maxvit
+    - multi-axis attention
+
+
+MODEL
+- position encoding -> rope
+- attention -> MLA (deepseek)
+- mbconv -> better? mobilenet-v5?
+  - https://github.com/huggingface/pytorch-image-models/blob/e7bd97be7ed3bb1da9c4c36c00abbe75eb116b10/timm/models/mobilenetv5.py
+  - why even use a hybrid model?
+- 
