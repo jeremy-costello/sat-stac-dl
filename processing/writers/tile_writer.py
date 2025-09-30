@@ -197,7 +197,7 @@ async def download_rcm_tiles(con):
             item_dir = OUTPUT_DIR / item
             merged_path = item_dir / f"{item}_merged.tif"
             if not merged_path.exists():
-                combine_bands(band_files["rr"], band_files["rl"], merged_path)
+                combine_bands(band_files, merged_path)
                 # Remove single-band files after merge
                 for f in band_files.values():
                     try:
