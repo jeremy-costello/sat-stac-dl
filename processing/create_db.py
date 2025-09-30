@@ -17,7 +17,7 @@ from processing.writers.tile_writer import (
 
 
 DB_PATH = "./data/outputs/rcm_ard.duckdb"
-RESOLUTION_M = 30
+RESOLUTION_M = 20
 TILE_SIZE = 256
 
 # -----------------------------

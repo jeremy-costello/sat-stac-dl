@@ -23,6 +23,7 @@ FILTER_CDUID = 1006
 BAND_MAP = {"rl": "RL", "rr": "RR"}  # asset mappings
 NODATA_CUTOFF = 0.01
 ITEMS_PER_ID = 5
+CROP_SIZE = 256
 
 
 async def create_rcm_ard_tiles_table(con):
@@ -82,19 +83,30 @@ def combine_bands(rr_path, rl_path, out_path):
     return out_path
 
 
-def crop_tiff(input_tif, bbox_latlon, out_path):
+def crop_tiff(input_tif, lon, lat, out_path, crop_size=CROP_SIZE):
     with rasterio.open(input_tif) as src:
+        # Transform lon/lat to raster CRS
         transformer = Transformer.from_crs("EPSG:4326", src.crs, always_xy=True)
-        minx, miny = transformer.transform(bbox_latlon[0], bbox_latlon[1])
-        maxx, maxy = transformer.transform(bbox_latlon[2], bbox_latlon[3])
-        bbox = [minx, miny, maxx, maxy]
+        x, y = transformer.transform(lon, lat)
 
-        window = from_bounds(*bbox, transform=src.transform)
-        data = src.read(window=window)
+        # Convert to row/col in raster grid
+        row, col = src.index(x, y)
+
+        # Define window centered on (row, col)
+        half = crop_size // 2
+        window = rasterio.windows.Window(
+            col_off=col - half,
+            row_off=row - half,
+            width=crop_size,
+            height=crop_size
+        )
+
+        # Read data in window
+        data = src.read(window=window, boundless=True, fill_value=src.nodata)
         meta = src.meta.copy()
         meta.update(
-            width=data.shape[2],
-            height=data.shape[1],
+            width=crop_size,
+            height=crop_size,
             transform=src.window_transform(window)
         )
 
@@ -185,11 +197,12 @@ async def download_rcm_tiles(con):
 
             # Process only the IDs that sampled this item
             for row_id in tqdm(item_to_ids[item], desc=f"Cropping {item}", leave=False):
-                bbox = con.execute(f"SELECT bbox FROM {BBOX_TABLE} WHERE id = {row_id}").fetchone()[0]
-                bbox = [float(x) for x in bbox.split(",")] if isinstance(bbox, str) else bbox
+                lon, lat = con.execute(
+                    f"SELECT lon, lat FROM {BBOX_TABLE} WHERE id = {row_id}"
+                ).fetchone()
 
                 out_crop = item_dir / f"{item}_{row_id}.tif"
-                nodata_fracs, out_path, height, width = crop_tiff(merged_path, bbox, out_crop)
+                nodata_fracs, out_path, height, width = crop_tiff(merged_path, lon, lat, out_crop, crop_size=CROP_SIZE)
 
                 # Insert into target table
                 con.execute(f"""
