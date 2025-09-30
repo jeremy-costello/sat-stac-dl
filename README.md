@@ -1,6 +1,6 @@
 # Satellite STAC Downloader
 
-This repository generates random bounding boxes in Canada and downloads **RCM-ARD** imagery at **256×256 pixels** with **30m resolution**. 
+This repository generates random bounding boxes in Canada and downloads **RCM-ARD** imagery at **256×256 pixels** with **20m resolution**. 
 
 In addition to the RCM data, it also downloads:
 
@@ -19,7 +19,8 @@ A web-based visualization of 1000 example bounding boxes and metadata downloaded
 
 ## Features
 
-- Generates random bounding boxes within Canada.
+- Generates various lat/long coordinates within Canada.
+  - can be from across provinces, census divisions, census subdivisions, or completely random
 - Fetches RCM-ARD imagery using STAC APIs.
 - Fetches associated landcover data.
 - Extracts metadata from shapefiles for provinces, census divisions, and subdivisions.
