@@ -32,16 +32,16 @@ os.makedirs("./data/outputs", exist_ok=True)
 async def main_async(resolution_m, tile_size):
     con = duckdb.connect(DB_PATH)
     
-    # create_bbox_table(con)
-    # await insert_points_async(con)
-    # await update_bboxes_async(con, resolution_m, tile_size)
+    create_bbox_table(con)
+    await insert_points_async(con)
+    await update_bboxes_async(con, resolution_m, tile_size)
 
-    # create_landcover_table(con)
-    # await update_landcover_from_tiff(con)
-    # await update_census_data(con)
+    create_landcover_table(con)
+    await update_landcover_from_tiff(con)
+    await update_census_data(con)
 
-    # await create_rcm_ard_tables(con)
-    # await update_rcm_ard_tables(con)
+    await create_rcm_ard_tables(con)
+    await update_rcm_ard_tables(con)
 
     await create_rcm_ard_tiles_table(con)
     await download_rcm_tiles(con)
