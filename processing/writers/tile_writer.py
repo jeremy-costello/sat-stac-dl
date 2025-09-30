@@ -33,7 +33,9 @@ async def create_rcm_ard_tiles_table(con):
             item TEXT,
             rl_nodata_pct DOUBLE,
             rr_nodata_pct DOUBLE,
-            filepath TEXT
+            filepath TEXT,
+            height INTEGER,
+            width INTEGER
         );
     """)
 
@@ -91,7 +93,8 @@ def crop_tiff(input_tif, bbox_latlon, out_path):
         data = src.read(window=window)
         meta = src.meta.copy()
         meta.update(
-            width=data.shape[2], height=data.shape[1],
+            width=data.shape[2],
+            height=data.shape[1],
             transform=src.window_transform(window)
         )
 
@@ -101,7 +104,7 @@ def crop_tiff(input_tif, bbox_latlon, out_path):
 
         # --- Check cutoff ---
         if any(frac > NODATA_CUTOFF for frac in nodata_frac):
-            return nodata_frac, None  # skip saving, return fractions only
+            return nodata_frac, None, data.shape[1], data.shape[2]
 
         # --- Fill nodata if below cutoff ---
         filled_data = np.empty_like(data)
@@ -121,7 +124,7 @@ def crop_tiff(input_tif, bbox_latlon, out_path):
         with rasterio.open(out_path, "w", **meta) as dst:
             dst.write(filled_data)
 
-    return nodata_frac, str(out_path)
+    return nodata_frac, str(out_path), data.shape[1], data.shape[2]
 
 
 async def download_rcm_tiles(con):
@@ -186,13 +189,15 @@ async def download_rcm_tiles(con):
                 bbox = [float(x) for x in bbox.split(",")] if isinstance(bbox, str) else bbox
 
                 out_crop = item_dir / f"{item}_{row_id}.tif"
-                nodata_fracs, out_path = crop_tiff(merged_path, bbox, out_crop)
+                nodata_fracs, out_path, height, width = crop_tiff(merged_path, bbox, out_crop)
 
                 # Insert into target table
                 con.execute(f"""
-                    INSERT INTO {RCM_TABLE_TARGET} (id, item, rl_nodata_pct, rr_nodata_pct, filepath)
-                    VALUES (?, ?, ?, ?, ?)
-                """, [row_id, item, nodata_fracs[1], nodata_fracs[0], out_path])
+                    INSERT INTO {RCM_TABLE_TARGET} (
+                        id, item, rl_nodata_pct, rr_nodata_pct, filepath, height, width
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, [row_id, item, nodata_fracs[1], nodata_fracs[0], out_path, height, width])
 
             # Remove merged file after all crops are done
             try:
