@@ -2,7 +2,6 @@ import asyncio
 import numpy as np
 import rasterio
 import pyarrow as pa
-from rasterio.enums import Resampling
 from pyproj import Transformer
 from concurrent.futures import ProcessPoolExecutor
 from tqdm.asyncio import tqdm_asyncio
@@ -12,13 +11,12 @@ from processing.utils.landcover_utils import compute_entropy
 RASTER_SRC = None
 TRANSFORMER = None
 NUM_CLASSES = 19
-SRC_CRS = 'EPSG:4326'
-TIF_BOUNDS_IN_3979 = rasterio.coords.BoundingBox(
-    left=-2600010.0,
-    bottom=-885090.0,
-    right=3100020.0,
-    top=3914940.0
-)
+POINT_CRS = 'EPSG:4326'
+
+# Target patch size at "20 m resolution"
+PATCH_SIZE = 256           # pixels
+TARGET_RES_M = 20          # 20 m per pixel
+PATCH_EXTENT_M = PATCH_SIZE * TARGET_RES_M  # 5120 m (~5.1 km)
 
 
 def create_landcover_table(con):
@@ -38,23 +36,28 @@ def init_worker(tiff_path):
     """Initializes each worker process by opening the GeoTIFF."""
     global RASTER_SRC, TRANSFORMER
     RASTER_SRC = rasterio.open(tiff_path)
-
     dst_crs = RASTER_SRC.crs
-    TRANSFORMER = Transformer.from_crs(SRC_CRS, dst_crs, always_xy=True)
+    TRANSFORMER = Transformer.from_crs(POINT_CRS, dst_crs, always_xy=True)
 
 
 def process_row_mp(row):
     """Worker function for cropping and stats, run by a process pool."""
-    row_id, bbox = row
-    lon_min, lat_min, lon_max, lat_max = bbox
+    row_id, lon, lat = row
 
-    # Transform bbox coordinates from EPSG 4326 to EPSG 3979
-    minx, miny = TRANSFORMER.transform(lon_min, lat_min)
-    maxx, maxy = TRANSFORMER.transform(lon_max, lat_max)
+    # Transform center coordinates to TIFF CRS
+    cx, cy = TRANSFORMER.transform(lon, lat)
 
-    if not (minx < TIF_BOUNDS_IN_3979.right and maxx > TIF_BOUNDS_IN_3979.left and
-            miny < TIF_BOUNDS_IN_3979.top and maxy > TIF_BOUNDS_IN_3979.bottom):
-        # If there is no overlap, return an all-nodata result
+    # Half-size in meters
+    half_extent = PATCH_EXTENT_M / 2.0  # ~2560 m
+
+    # Define crop bounds in TIFF CRS (same physical size as 20m patch)
+    minx, maxx = cx - half_extent, cx + half_extent
+    miny, maxy = cy - half_extent, cy + half_extent
+
+    # Check overlap with dataset bounds
+    tif_bounds = RASTER_SRC.bounds
+    if not (maxx > tif_bounds.left and minx < tif_bounds.right and
+            maxy > tif_bounds.bottom and miny < tif_bounds.top):
         return {
             "id": row_id,
             "nodata": 0,
@@ -63,25 +66,16 @@ def process_row_mp(row):
             "entropy": 0.0,
         }
 
-    reprojected_window = rasterio.windows.from_bounds(
-        minx, miny, maxx, maxy, RASTER_SRC.transform
-    )
+    # Create window in raster pixel coordinates (no resampling)
+    window = rasterio.windows.from_bounds(minx, miny, maxx, maxy, RASTER_SRC.transform)
 
-    window_to_read = reprojected_window.intersection(RASTER_SRC.window(*RASTER_SRC.bounds))
-
-    # Read the data from the intersecting window
-    # The `read()` function will only read from the overlapping portion
-    data = RASTER_SRC.read(
-        1,
-        window=window_to_read,
-        out_shape=(256, 256),  # Resample to the target size
-        resampling=Resampling.nearest,
-    )
+    # Read data at native resolution
+    data = RASTER_SRC.read(1, window=window)
 
     # Count nodata (assuming 0 is nodata for this TIFF)
     nodata_count = np.sum(data == 0)
 
-    # Count classes 1–19 using the highly optimized bincount
+    # Count classes 1–19 using bincount
     counts_bin = np.bincount(data.flatten(), minlength=NUM_CLASSES + 1)
     counts = counts_bin[1:]
 
@@ -106,7 +100,7 @@ async def update_landcover_from_tiff(
 ):
     loop = asyncio.get_running_loop()
     rows = await loop.run_in_executor(
-        None, lambda: con.execute("SELECT id, bbox FROM canada_bboxes").fetchall()
+        None, lambda: con.execute("SELECT id, lon, lat FROM canada_bboxes").fetchall()
     )
     print(f"🌍 Retrieved {len(rows)} rows for landcover stats")
 
@@ -122,7 +116,7 @@ async def update_landcover_from_tiff(
             )
         ]
         
-    # ... Build PyArrow Table and bulk insert (same as your original code)
+    # Build PyArrow Table and bulk insert
     table_dict = {
         "id": [r["id"] for r in results],
         "nodata": [r["nodata"] for r in results],
