@@ -20,25 +20,31 @@ OUTPUT_DIR = Path("./data/outputs/rcm_tiles")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 FILTER_PRUID = None
 FILTER_CDUID = 1006
-BAND_MAP = {"rl": "RL", "rr": "RR"}  # asset mappings
 NODATA_CUTOFF = 0.01
 ITEMS_PER_ID = 5
 CROP_SIZE = 256
+# asset mappings
+BAND_MAP = {
+    "rl": "RL",
+    "rr": "RR"
+}
 
 
 async def create_rcm_ard_tiles_table(con):
-    # Create / reset target table
+    # Build dynamic nodata columns
+    nodata_cols = ",\n".join([f"{key}_nodata_pct DOUBLE" for key in BAND_MAP.keys()])
+    
     con.execute(f"""
         CREATE OR REPLACE TABLE {RCM_TABLE_TARGET} (
             id INTEGER,
             item TEXT,
-            rl_nodata_pct DOUBLE,
-            rr_nodata_pct DOUBLE,
+            {nodata_cols},
             filepath TEXT,
             height INTEGER,
             width INTEGER
         );
     """)
+
 
 
 async def download_file(session, url, out_path):
@@ -72,14 +78,18 @@ async def download_bands(item, datetime, order_key, session):
     return out_files
 
 
-def combine_bands(rr_path, rl_path, out_path):
-    """Combine RL and RR into one multi-band tiff."""
-    with rasterio.open(rr_path) as rr, rasterio.open(rl_path) as rl:
-        meta = rr.meta.copy()
-        meta.update(count=2)
-        with rasterio.open(out_path, "w", **meta) as dst:
-            dst.write(rr.read(1), 1)
-            dst.write(rl.read(1), 2)
+def combine_bands(band_paths: dict, out_path):
+    """Combine bands into one multi-band tiff with band names from BAND_MAP."""
+    first_key = next(iter(band_paths))
+    with rasterio.open(band_paths[first_key]) as src0:
+        meta = src0.meta.copy()
+        meta.update(count=len(band_paths))
+
+    with rasterio.open(out_path, "w", **meta) as dst:
+        for i, (key, path) in enumerate(band_paths.items(), start=1):
+            with rasterio.open(path) as src:
+                dst.write(src.read(1), i)
+                dst.set_band_description(i, key)
     return out_path
 
 
@@ -202,15 +212,21 @@ async def download_rcm_tiles(con):
                 ).fetchone()
 
                 out_crop = item_dir / f"{item}_{row_id}.tif"
-                nodata_fracs, out_path, height, width = crop_tiff(merged_path, lon, lat, out_crop, crop_size=CROP_SIZE)
+                nodata_fracs, out_path, height, width = crop_tiff(
+                    merged_path, lon, lat, out_crop, crop_size=CROP_SIZE
+                )
 
-                # Insert into target table
+                # Build dynamic column/value list for nodata fractions
+                nodata_cols = [f"{key}_nodata_pct" for key in BAND_MAP.keys()]
+                nodata_vals = [nodata_fracs[i] for i in range(len(BAND_MAP))]
+
                 con.execute(f"""
                     INSERT INTO {RCM_TABLE_TARGET} (
-                        id, item, rl_nodata_pct, rr_nodata_pct, filepath, height, width
+                        id, item, {", ".join(nodata_cols)}, filepath, height, width
+                    ) VALUES (
+                        ?, ?, {", ".join(["?"] * len(nodata_cols))}, ?, ?, ?
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, [row_id, item, nodata_fracs[1], nodata_fracs[0], out_path, height, width])
+                """, [row_id, item, *nodata_vals, out_path, height, width])
 
             # Remove merged file after all crops are done
             try:
