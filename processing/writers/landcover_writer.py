@@ -11,12 +11,7 @@ from processing.utils.landcover_utils import compute_entropy
 RASTER_SRC = None
 TRANSFORMER = None
 NUM_CLASSES = 19
-POINT_CRS = 'EPSG:4326'
-
-# Target patch size at "20 m resolution"
-PATCH_SIZE = 256           # pixels
-TARGET_RES_M = 20          # 20 m per pixel
-PATCH_EXTENT_M = PATCH_SIZE * TARGET_RES_M  # 5120 m (~5.1 km)
+BBOX_CRS = 'EPSG:4326'
 
 
 def create_landcover_table(con):
@@ -37,22 +32,17 @@ def init_worker(tiff_path):
     global RASTER_SRC, TRANSFORMER
     RASTER_SRC = rasterio.open(tiff_path)
     dst_crs = RASTER_SRC.crs
-    TRANSFORMER = Transformer.from_crs(POINT_CRS, dst_crs, always_xy=True)
+    TRANSFORMER = Transformer.from_crs(BBOX_CRS, dst_crs, always_xy=True)
 
 
 def process_row_mp(row):
     """Worker function for cropping and stats, run by a process pool."""
-    row_id, lon, lat = row
+    row_id, bbox = row
+    lon_min, lat_min, lon_max, lat_max = bbox
 
-    # Transform center coordinates to TIFF CRS
-    cx, cy = TRANSFORMER.transform(lon, lat)
-
-    # Half-size in meters
-    half_extent = PATCH_EXTENT_M / 2.0  # ~2560 m
-
-    # Define crop bounds in TIFF CRS (same physical size as 20m patch)
-    minx, maxx = cx - half_extent, cx + half_extent
-    miny, maxy = cy - half_extent, cy + half_extent
+    # Transform bbox coordinates into TIFF CRS
+    minx, miny = TRANSFORMER.transform(lon_min, lat_min)
+    maxx, maxy = TRANSFORMER.transform(lon_max, lat_max)
 
     # Check overlap with dataset bounds
     tif_bounds = RASTER_SRC.bounds
@@ -100,7 +90,7 @@ async def update_landcover_from_tiff(
 ):
     loop = asyncio.get_running_loop()
     rows = await loop.run_in_executor(
-        None, lambda: con.execute("SELECT id, lon, lat FROM canada_bboxes").fetchall()
+        None, lambda: con.execute("SELECT id, bbox FROM canada_bboxes").fetchall()
     )
     print(f"🌍 Retrieved {len(rows)} rows for landcover stats")
 
